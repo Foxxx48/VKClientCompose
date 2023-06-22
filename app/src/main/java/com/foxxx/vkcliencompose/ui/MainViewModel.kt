@@ -8,7 +8,7 @@ import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.domain.StatisticItem
 
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
 
     private val _feedPost = MutableLiveData(FeedPost())
     val feedPost: LiveData<FeedPost> = _feedPost
@@ -17,6 +17,7 @@ class MainViewModel: ViewModel() {
         repeat(500) {
             add(
                 FeedPost(
+                    id = it,
                     publicationDate = "Publication Date $it"
                 )
             )
@@ -27,7 +28,6 @@ class MainViewModel: ViewModel() {
     val vkModels: LiveData<List<FeedPost>> = _vkModels
 
     fun updateCount(item: StatisticItem) {
-
         val oldStatistics = feedPost.value?.statistics ?: throw IllegalStateException()
         val newStatistics =
             oldStatistics.toMutableStateList().apply {

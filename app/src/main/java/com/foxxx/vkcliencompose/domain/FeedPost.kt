@@ -3,6 +3,7 @@ package com.foxxx.vkcliencompose.domain
 import com.foxxx.vkcliencompose.R
 
 data class FeedPost(
+    val id: Int = 100500,
     val communityName: String = "Foxxx",
     val publicationDate: String = "23:23",
     val avatarResId: Int = R.drawable.ic_fox,
