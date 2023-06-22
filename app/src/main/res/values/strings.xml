@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">VKClientCompose</string>
+    <string name="navigation_item_main">Главная</string>
+    <string name="navigation_item_favourite">Избранное</string>
+    <string name="navigation_item_profile">Профиль</string>
+
+    <string name="horizon_zero_down">Horizon Zero Dawn - это компьютерная игра в жанре Action/RPG,
+    разработанная студией Guerrilla Games и выпущенная в 2017 году
+        для игровых платформ PlayStation 4 и PC.</string>
+
 </resources>

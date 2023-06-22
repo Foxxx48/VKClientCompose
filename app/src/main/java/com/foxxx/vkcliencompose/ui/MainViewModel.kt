@@ -1,6 +1,5 @@
 package com.foxxx.vkcliencompose.ui
 
-import android.util.Log
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +14,7 @@ class MainViewModel: ViewModel() {
     val feedPost: LiveData<FeedPost> = _feedPost
 
     fun updateCount(item: StatisticItem) {
-        Log.d("Test", "updateCount ViewModel ")
+
         val oldStatistics = feedPost.value?.statistics ?: throw IllegalStateException()
         val newStatistics =
             oldStatistics.toMutableStateList().apply {

@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose
+package com.foxxx.vkcliencompose.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
