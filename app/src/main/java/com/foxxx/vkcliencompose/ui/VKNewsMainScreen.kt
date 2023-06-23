@@ -20,7 +20,6 @@ fun MainScreen(
     viewModel: MainViewModel,
 //    content: @Composable () -> Unit
 ) {
-
     Scaffold(
         bottomBar = {
             BottomNavigation() {

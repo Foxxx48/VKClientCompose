@@ -1,7 +1,10 @@
 package com.foxxx.vkcliencompose.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,18 +21,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.foxxx.vkcliencompose.domain.FeedPost
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun Test(
     viewModel: MainViewModel,
     modifier: Modifier = Modifier
 ) {
-    val models = viewModel.vkModels.observeAsState(listOf())
+    val models = viewModel.feedPosts.observeAsState(listOf())
 
     LazyColumn(
         modifier = modifier,
+        contentPadding = PaddingValues(
+            start = 8.dp,
+            end = 8.dp,
+            top = 16.dp,
+            bottom = 72.dp,
+        ),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
             models.value,
@@ -44,6 +53,8 @@ fun Test(
             }
             SwipeToDismiss(
                 state = dismissState,
+                modifier = Modifier
+                    .animateItemPlacement(),
                 directions = setOf(DismissDirection.EndToStart),
                 background = {
                     Box(
@@ -62,21 +73,34 @@ fun Test(
                     }
                 }
             ) {
-                val feedPost = viewModel.feedPost.observeAsState(FeedPost())
-
                 VKCard(
-                    modifier = Modifier
-                        .padding(8.dp),
                     feedPost = model,
-                    onViewClickListener = { viewModel.updateCount(it) },
-                    onShareClickListener = { viewModel.updateCount(it) },
-                    onCommentClickListener = viewModel::updateCount,
-                    onLikeClickListener = viewModel::updateCount
+                    onViewClickListener = { statisticItem ->
+                        viewModel.updateCount(
+                            model,
+                            statisticItem
+                        )
+                    },
+                    onShareClickListener = { statisticItem ->
+                        viewModel.updateCount(
+                            model,
+                            statisticItem
+                        )
+                    },
+                    onCommentClickListener = { statisticItem ->
+                        viewModel.updateCount(
+                            model,
+                            statisticItem
+                        )
+                    },
+                    onLikeClickListener = { statisticItem ->
+                        viewModel.updateCount(
+                            model,
+                            statisticItem
+                        )
+                    }
                 )
-
-
             }
         }
     }
-
 }
