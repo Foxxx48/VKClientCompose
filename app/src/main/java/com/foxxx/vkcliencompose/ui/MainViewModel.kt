@@ -10,6 +10,12 @@ import com.foxxx.vkcliencompose.domain.StatisticItem
 
 class MainViewModel : ViewModel() {
 
+    private val _selectedNavItem = MutableLiveData<NavigationItem>(NavigationItem.Home)
+    val selectedNavItem : LiveData<NavigationItem> = _selectedNavItem
+
+    fun selectNavItem(item: NavigationItem) {
+        _selectedNavItem.value = item
+    }
 
     private val initialList = mutableListOf<FeedPost>().apply {
         repeat(10) {

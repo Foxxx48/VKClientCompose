@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun Test(
+fun HomeScreen(
     viewModel: MainViewModel,
     modifier: Modifier = Modifier
 ) {
