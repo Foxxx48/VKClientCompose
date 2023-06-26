@@ -10,13 +10,15 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.foxxx.vkcliencompose.navigation.AppNavGraph
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -24,24 +26,25 @@ import androidx.compose.ui.res.stringResource
 fun MainScreen(
     viewModel: MainViewModel
 ) {
-
-    val selectedNavItem by viewModel.selectedNavItem.observeAsState(NavigationItem.Home)
+    val navHostController = rememberNavController()
 
     Scaffold(
         bottomBar = {
             BottomNavigation() {
+                val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
 
                 val items =
                     listOf(
                         NavigationItem.Home,
                         NavigationItem.Favorite,
-                        NavigationItem.Account
+                        NavigationItem.Profile
                     )
 
-                items.forEach() {  item ->
+                items.forEach() { item ->
                     BottomNavigationItem(
-                        selected = selectedNavItem == item,
-                        onClick = { viewModel.selectNavItem(item) },
+                        selected = currentRoute == item.screen.route,
+                        onClick = { navHostController.navigate(item.screen.route) },
                         icon = {
                             Icon(
                                 item.icon, contentDescription = null,
@@ -60,11 +63,11 @@ fun MainScreen(
             }
         },
     ) {
-        when(selectedNavItem) {
-            NavigationItem.Account -> TextCount(name = "Account")
-            NavigationItem.Favorite -> TextCount(name = "Favorite")
-            NavigationItem.Home -> HomeScreen(viewModel = viewModel)
-        }
+        AppNavGraph(
+            navHostController = navHostController,
+            homeScreenContent = { HomeScreen(viewModel = viewModel) },
+            favouriteScreenContent = { TextCount(name = "Favorite") },
+            profileScreenContent = { TextCount(name = "Account") })
     }
 }
 
@@ -73,7 +76,7 @@ private fun TextCount(name: String) {
     var count by remember {
         mutableStateOf(0)
     }
-    
+
     Text(
         modifier = Modifier.clickable { count++ },
         text = "$name Count $count",
