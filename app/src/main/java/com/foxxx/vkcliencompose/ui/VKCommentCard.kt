@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,7 +15,6 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -35,13 +35,12 @@ fun VKCommentCard(
     Card(modifier = modifier) {
         Row(
             modifier = Modifier
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-
+                .padding(8.dp)
+                .fillMaxWidth(),
             ) {
             Image(
                 modifier = Modifier
-                    .size(60.dp)
+                    .size(24.dp)
                     .clip(CircleShape)
                     .background(Color.White)
                     .padding(8.dp),

@@ -1,10 +1,11 @@
 package com.foxxx.vkcliencompose.ui
 
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -16,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,16 +26,11 @@ import com.foxxx.vkcliencompose.domain.PostComment
 import com.foxxx.vkcliencompose.ui.theme.VKClientComposeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CommentsScreen(
-    feedPost: FeedPost
+    feedPost: FeedPost,
+    comments: List<PostComment>
 ) {
-    val comments = mutableListOf<PostComment>()
-        repeat(10) {
-            comments.add(PostComment(id=it))
-        }
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -46,10 +43,11 @@ fun CommentsScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = { /*TODO*/ }) {
-                       Icon(
-                           imageVector = Icons.Filled.ArrowBack,
-                           contentDescription = "",
-                       tint = MaterialTheme.colorScheme.onSecondary)
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.onSecondary
+                        )
 
                     }
 
@@ -57,8 +55,9 @@ fun CommentsScreen(
                 colors = TopAppBarDefaults.smallTopAppBarColors()
             )
         }
-    ) {
+    ) { paddingValues ->
         LazyColumn(
+            modifier = Modifier.padding(paddingValues),
             contentPadding = PaddingValues(
                 start = 8.dp,
                 end = 8.dp,
@@ -67,8 +66,14 @@ fun CommentsScreen(
             ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(3) {
-                VKCommentCard(postComment = PostComment(id = it))
+//            items(items= comments) {
+//                VKCommentCard(postComment = PostComment(id = it))
+//            }
+            items(
+                items = comments,
+                key = { it.id }
+            ) {comment ->
+                VKCommentCard(postComment = comment)
             }
         }
     }
@@ -81,7 +86,13 @@ fun PreviewCommentScreenLightTheme() {
         darkTheme = false,
         dynamicColor = false
     ) {
-        CommentsScreen(FeedPost())
+        val comments = mutableListOf<PostComment>().apply {
+            repeat(10) {
+                add(PostComment(id = it))
+            }
+        }
+        CommentsScreen(FeedPost(),
+        comments)
     }
 }
 
@@ -92,7 +103,12 @@ fun PreviewCommentScreenDarkTheme() {
         darkTheme = true,
         dynamicColor = false
     ) {
-        CommentsScreen(FeedPost())
+        val comments = mutableListOf<PostComment>().apply {
+            repeat(10) {
+                add(PostComment(id = it))
+            }
+        }
+        CommentsScreen(FeedPost(), comments)
     }
 }
 
