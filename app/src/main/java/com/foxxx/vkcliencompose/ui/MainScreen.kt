@@ -17,9 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.foxxx.vkcliencompose.navigation.AppNavGraph
-import com.foxxx.vkcliencompose.navigation.Screen
+import com.foxxx.vkcliencompose.navigation.rememberNavigationState
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -27,12 +26,13 @@ import com.foxxx.vkcliencompose.navigation.Screen
 fun MainScreen(
     viewModel: MainViewModel
 ) {
-    val navHostController = rememberNavController()
+    val navigationState = rememberNavigationState()
+
 
     Scaffold(
         bottomBar = {
             BottomNavigation() {
-                val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+                val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
                 val items =
@@ -45,13 +45,7 @@ fun MainScreen(
                 items.forEach() { item ->
                     BottomNavigationItem(
                         selected = currentRoute == item.screen.route,
-                        onClick = { navHostController.navigate(item.screen.route) {
-                            popUpTo(Screen.NewsFeed.route) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        } },
+                        onClick = { navigationState.navigateTo(item.screen.route) },
                         icon = {
                             Icon(
                                 item.icon, contentDescription = null,
@@ -71,7 +65,7 @@ fun MainScreen(
         },
     ) {
         AppNavGraph(
-            navHostController = navHostController,
+            navHostController = navigationState.navHostController,
             homeScreenContent = { HomeScreen(viewModel = viewModel) },
             favouriteScreenContent = { TextCount(name = "Favorite") },
             profileScreenContent = { TextCount(name = "Account") })
