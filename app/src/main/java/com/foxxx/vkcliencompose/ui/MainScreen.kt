@@ -28,7 +28,6 @@ fun MainScreen(
 ) {
     val navigationState = rememberNavigationState()
 
-
     Scaffold(
         bottomBar = {
             BottomNavigation() {
