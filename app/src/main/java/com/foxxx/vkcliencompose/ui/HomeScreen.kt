@@ -38,7 +38,13 @@ fun HomeScreen(
             )
         }
         is HomeScreenState.Comments -> {
-            CommentsScreen(feedPost = currentState.feedPost, comments = currentState.comments)
+            CommentsScreen(
+                feedPost = currentState.feedPost,
+                comments = currentState.comments,
+                onBackPressed = {
+                    viewModel.closeComments()
+                }
+            )
         }
         HomeScreenState.Initial -> {
 
@@ -108,11 +114,9 @@ private fun FeedPosts(
                             statisticItem
                         )
                     },
-                    onCommentClickListener = { statisticItem ->
-                        viewModel.updateCount(
-                            model,
-                            statisticItem
-                        )
+                    onCommentClickListener = {
+                        viewModel.showComments(model)
+
                     },
                     onLikeClickListener = { statisticItem ->
                         viewModel.updateCount(

@@ -18,18 +18,17 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.domain.PostComment
-import com.foxxx.vkcliencompose.ui.theme.VKClientComposeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
     feedPost: FeedPost,
-    comments: List<PostComment>
+    comments: List<PostComment>,
+    onBackPressed: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -42,7 +41,7 @@ fun CommentsScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onBackPressed() }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "",
@@ -62,7 +61,7 @@ fun CommentsScreen(
                 start = 8.dp,
                 end = 8.dp,
                 top = 16.dp,
-                bottom = 32.dp,
+                bottom = 72.dp,
             ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -79,36 +78,22 @@ fun CommentsScreen(
     }
 }
 
-@Preview
-@Composable
-fun PreviewCommentScreenLightTheme() {
-    VKClientComposeTheme(
-        darkTheme = false,
-        dynamicColor = false
-    ) {
-        val comments = mutableListOf<PostComment>().apply {
-            repeat(10) {
-                add(PostComment(id = it))
-            }
-        }
-        CommentsScreen(FeedPost(),
-        comments)
-    }
-}
+//@Preview
+//@Composable
+//fun PreviewCommentScreenLightTheme() {
+//    VKClientComposeTheme(
+//        darkTheme = false,
+//        dynamicColor = false
+//    ) {
+//        val comments = mutableListOf<PostComment>().apply {
+//            repeat(10) {
+//                add(PostComment(id = it))
+//            }
+//        }
+//        CommentsScreen(FeedPost(),
+//        comments, onBackPressed = onBackPressed())
+//    }
+//}
 
-@Preview
-@Composable
-fun PreviewCommentScreenDarkTheme() {
-    VKClientComposeTheme(
-        darkTheme = true,
-        dynamicColor = false
-    ) {
-        val comments = mutableListOf<PostComment>().apply {
-            repeat(10) {
-                add(PostComment(id = it))
-            }
-        }
-        CommentsScreen(FeedPost(), comments)
-    }
-}
+
 
