@@ -10,7 +10,7 @@ import com.foxxx.vkcliencompose.domain.StatisticItem
 
 class MainViewModel : ViewModel() {
 
-    private val initialList = mutableListOf<FeedPost>().apply {
+    private val sourceList = mutableListOf<FeedPost>().apply {
         repeat(10) {
             add(
                 FeedPost(
@@ -21,14 +21,16 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private val _feedPosts = MutableLiveData<List<FeedPost>>(initialList)
-    val feedPosts: LiveData<List<FeedPost>> = _feedPosts
+    private val initialState = HomeScreenState.Posts(posts = sourceList)
+
+    private val _screenState = MutableLiveData<HomeScreenState>(initialState)
+    val screenState: LiveData<HomeScreenState> = _screenState
 
     fun updateCount(
         feedPost: FeedPost,
         item: StatisticItem
     ) {
-        val oldPosts = feedPosts.value?.toMutableList() ?: mutableListOf()
+        val oldPosts = screenState.value?.toMutableList() ?: mutableListOf()
         val oldStatistics = feedPost.statistics
         val newStatistics =
             oldStatistics.toMutableStateList().apply {

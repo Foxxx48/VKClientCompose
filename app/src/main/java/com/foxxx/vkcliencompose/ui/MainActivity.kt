@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
+import com.foxxx.vkcliencompose.domain.FeedPost
+import com.foxxx.vkcliencompose.domain.PostComment
 import com.foxxx.vkcliencompose.ui.theme.VKClientComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +25,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen(viewModel)
+//                    MainScreen(viewModel)
+                    val comments = mutableListOf<PostComment>().apply {
+                        repeat(10) {
+                            add(PostComment(id= it))
+                        }
+                    }
+                    CommentsScreen(feedPost = FeedPost(), comments = comments )
                 }
             }
         }

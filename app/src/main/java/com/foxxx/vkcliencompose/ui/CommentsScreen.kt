@@ -62,7 +62,7 @@ fun CommentsScreen(
                 start = 8.dp,
                 end = 8.dp,
                 top = 16.dp,
-                bottom = 72.dp,
+                bottom = 32.dp,
             ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
