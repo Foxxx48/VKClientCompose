@@ -17,62 +17,64 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.foxxx.vkcliencompose.domain.FeedPost
-import com.foxxx.vkcliencompose.domain.PostComment
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
-    feedPost: FeedPost,
-    comments: List<PostComment>,
     onBackPressed: () -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Comments for FeedPostId: ${feedPost.id}",
-                        fontSize = 18.sp,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { onBackPressed() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.onSecondary
+    val viewModel: CommentsViewModel = viewModel()
+    val screenState =
+        viewModel.screenState.observeAsState(CommentsScreenState.Initial)
+    val currentState = screenState.value
+    if (currentState is CommentsScreenState.Comments) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "Comments for FeedPostId: ${currentState.feedPost.id}",
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { onBackPressed() }) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = "",
+                                tint = MaterialTheme.colorScheme.onSecondary
+                            )
 
-                    }
+                        }
 
-                },
-                colors = TopAppBarDefaults.smallTopAppBarColors()
-            )
-        }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.padding(paddingValues),
-            contentPadding = PaddingValues(
-                start = 8.dp,
-                end = 8.dp,
-                top = 16.dp,
-                bottom = 72.dp,
-            ),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-//            items(items= comments) {
-//                VKCommentCard(postComment = PostComment(id = it))
-//            }
-            items(
-                items = comments,
-                key = { it.id }
-            ) {comment ->
-                VKCommentCard(postComment = comment)
+                    },
+                    colors = TopAppBarDefaults.smallTopAppBarColors()
+                )
+            }
+        ) { paddingValues ->
+            LazyColumn(
+                modifier = Modifier.padding(paddingValues),
+                contentPadding = PaddingValues(
+                    start = 8.dp,
+                    end = 8.dp,
+                    top = 16.dp,
+                    bottom = 72.dp,
+                ),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+
+                items(
+                    items = currentState.comments,
+                    key = { it.id }
+                ) { comment ->
+                    VKCommentCard(postComment = comment)
+                }
             }
         }
     }

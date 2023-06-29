@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SwipeToDismiss
@@ -20,34 +21,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.domain.FeedPost
-import androidx.compose.foundation.lazy.items
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
+
 @Composable
 fun HomeScreen(
-    viewModel: MainViewModel,
+    onCommentsClickListener: (FeedPost) -> Unit
 ) {
-    val screenState = viewModel.screenState.observeAsState(HomeScreenState.Initial)
+    val viewModel: NewsFeedViewModel = viewModel()
+    val screenState = viewModel.screenState.observeAsState(NewsFeedScreenState.Initial)
 
     when (val currentState = screenState.value) {
-        is HomeScreenState.Posts -> {
+        is NewsFeedScreenState.Posts -> {
             FeedPosts(
                 viewModel = viewModel,
-                posts = currentState.posts
-            )
-        }
-        is HomeScreenState.Comments -> {
-            CommentsScreen(
-                feedPost = currentState.feedPost,
-                comments = currentState.comments,
-                onBackPressed = {
-                    viewModel.closeComments()
+                posts = currentState.posts,
+                onCommentsClickListener = {
+                    onCommentsClickListener(it)
                 }
             )
         }
-        HomeScreenState.Initial -> {
-
+        NewsFeedScreenState.Initial -> {
         }
     }
 }
@@ -55,8 +50,9 @@ fun HomeScreen(
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 private fun FeedPosts(
-    viewModel: MainViewModel,
-    posts: List<FeedPost>
+    viewModel: NewsFeedViewModel,
+    posts: List<FeedPost>,
+    onCommentsClickListener: (FeedPost) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(
@@ -71,12 +67,12 @@ private fun FeedPosts(
             items = posts,
             key = {
                 it.id
-            }) { model ->
+            }) { feedPost ->
 
             val dismissState = rememberDismissState()
 
             if (dismissState.isDismissed(DismissDirection.EndToStart)) {
-                viewModel.deleteVKModel(model)
+                viewModel.deleteVKModel(feedPost)
             }
             SwipeToDismiss(
                 state = dismissState,
@@ -101,26 +97,25 @@ private fun FeedPosts(
                 }
             ) {
                 VKCard(
-                    feedPost = model,
+                    feedPost = feedPost,
                     onViewClickListener = { statisticItem ->
                         viewModel.updateCount(
-                            model,
+                            feedPost,
                             statisticItem
                         )
                     },
                     onShareClickListener = { statisticItem ->
                         viewModel.updateCount(
-                            model,
+                            feedPost,
                             statisticItem
                         )
                     },
                     onCommentClickListener = {
-                        viewModel.showComments(model)
-
-                    },
+                        onCommentsClickListener(feedPost)
+                                             },
                     onLikeClickListener = { statisticItem ->
                         viewModel.updateCount(
-                            model,
+                            feedPost,
                             statisticItem
                         )
                     }
