@@ -34,6 +34,7 @@ fun HomeScreen(
 
     when (val currentState = screenState.value) {
         is NewsFeedScreenState.Posts -> {
+
             FeedPosts(
                 viewModel = viewModel,
                 posts = currentState.posts,
@@ -43,6 +44,7 @@ fun HomeScreen(
             )
         }
         NewsFeedScreenState.Initial -> {
+
         }
     }
 }
