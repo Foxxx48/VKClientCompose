@@ -15,7 +15,8 @@ class NewsFeedViewModel : ViewModel() {
             add(
                 FeedPost(
                     id = it,
-                    publicationDate = "Publication Date $it"
+                    publicationDate = "Publication Date $it",
+                    contentText = "ContentText $it"
                 )
             )
         }
