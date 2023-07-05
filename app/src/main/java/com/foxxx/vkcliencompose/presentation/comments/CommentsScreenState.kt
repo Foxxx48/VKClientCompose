@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose.ui
+package com.foxxx.vkcliencompose.presentation.comments
 
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.domain.PostComment

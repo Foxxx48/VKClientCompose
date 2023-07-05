@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose.ui
+package com.foxxx.vkcliencompose.presentation.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite

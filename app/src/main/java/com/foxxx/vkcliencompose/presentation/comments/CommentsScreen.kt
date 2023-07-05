@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose.ui
+package com.foxxx.vkcliencompose.presentation.comments
 
 
 import androidx.compose.foundation.layout.Arrangement
@@ -19,10 +19,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.domain.FeedPost
+import com.foxxx.vkcliencompose.domain.PostComment
+import com.foxxx.vkcliencompose.ui.VKCommentCard
+import com.foxxx.vkcliencompose.ui.theme.VKClientComposeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,22 +88,22 @@ fun CommentsScreen(
     }
 }
 
-//@Preview
-//@Composable
-//fun PreviewCommentScreenLightTheme() {
-//    VKClientComposeTheme(
-//        darkTheme = false,
-//        dynamicColor = false
-//    ) {
-//        val comments = mutableListOf<PostComment>().apply {
-//            repeat(10) {
-//                add(PostComment(id = it))
-//            }
-//        }
-//        CommentsScreen(FeedPost(),
-//        comments, onBackPressed = onBackPressed())
-//    }
-//}
+@Preview
+@Composable
+fun PreviewCommentScreenLightTheme() {
+    VKClientComposeTheme(
+        darkTheme = false,
+        dynamicColor = false
+    ) {
+        val comments = mutableListOf<PostComment>().apply {
+            repeat(10) {
+                add(PostComment(id = it))
+            }
+        }
+        CommentsScreen(feedPost = FeedPost(),
+        onBackPressed = {})
+    }
+}
 
 
 

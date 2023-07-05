@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose.ui
+package com.foxxx.vkcliencompose.presentation.news
 
 import com.foxxx.vkcliencompose.domain.FeedPost
 

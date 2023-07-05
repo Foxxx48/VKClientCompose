@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose.ui
+package com.foxxx.vkcliencompose.samples
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

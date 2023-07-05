@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose.ui
+package com.foxxx.vkcliencompose.presentation.news
 
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.LiveData

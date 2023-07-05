@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose.ui
+package com.foxxx.vkcliencompose.presentation.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.foxxx.vkcliencompose.ui.LoginScreen
 import com.foxxx.vkcliencompose.ui.theme.VKClientComposeTheme
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
