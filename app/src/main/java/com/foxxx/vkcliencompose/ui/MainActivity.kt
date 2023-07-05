@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import com.foxxx.vkcliencompose.ui.theme.VKClientComposeTheme
 import com.vk.api.sdk.VK
@@ -29,22 +30,25 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val authLauncher = rememberLauncherForActivityResult(
                         contract = VK.getVKAuthActivityResultContract()
-                        ) {
+                    ) {
                         when (it) {
                             is VKAuthenticationResult.Success -> {
                                 // User passed authorization
                                 Log.d("TEST_VK", "Success Auth")
                             }
+
                             is VKAuthenticationResult.Failed -> {
                                 // User didn't pass authorization
                                 Log.d("TEST_VK", "Failed Auth")
                             }
-
                         }
                     }
 
-                    authLauncher.launch(arrayListOf(VKScope.WALL))
+                    SideEffect {
+                        authLauncher.launch(arrayListOf(VKScope.WALL))
+                    }
 
+                    MainScreen()
                 }
             }
         }
