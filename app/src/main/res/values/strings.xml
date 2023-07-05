@@ -8,5 +8,6 @@
     <string name="horizon_zero_down">Horizon Zero Dawn - это компьютерная игра в жанре Action/RPG,
     разработанная студией Guerrilla Games и выпущенная в 2017 году
         для игровых платформ PlayStation 4 и PC.</string>
+    <string name="button_login">Войти</string>
 
 </resources>

@@ -1,18 +1,17 @@
 package com.foxxx.vkcliencompose.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.ui.theme.VKClientComposeTheme
 import com.vk.api.sdk.VK
-import com.vk.api.sdk.auth.VKAuthenticationResult
 import com.vk.api.sdk.auth.VKScope
 
 class MainActivity : ComponentActivity() {
@@ -28,27 +27,28 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val viewModel: MainViewModel = viewModel()
+                    val authState = viewModel.authState.observeAsState(AuthState.Initial)
                     val authLauncher = rememberLauncherForActivityResult(
                         contract = VK.getVKAuthActivityResultContract()
                     ) {
-                        when (it) {
-                            is VKAuthenticationResult.Success -> {
-                                // User passed authorization
-                                Log.d("TEST_VK", "Success Auth")
+                        viewModel.performAuthResult(it)
+                    }
+
+                    when (authState.value) {
+                        is AuthState.Authorized -> MainScreen()
+
+                        is AuthState.NotAuthorized ->
+                            LoginScreen {
+                                authLauncher.launch(listOf(VKScope.WALL))
                             }
 
-                            is VKAuthenticationResult.Failed -> {
-                                // User didn't pass authorization
-                                Log.d("TEST_VK", "Failed Auth")
-                            }
+                        else -> {
+
                         }
+
                     }
 
-                    SideEffect {
-                        authLauncher.launch(arrayListOf(VKScope.WALL))
-                    }
-
-                    MainScreen()
                 }
             }
         }
