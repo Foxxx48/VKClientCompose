@@ -1,6 +1,7 @@
 package com.foxxx.vkcliencompose.presentation.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,7 +17,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         val storage = VKPreferencesKeyValueStorage(application)
         val token = VKAccessToken.restore(storage)
+        Log.d("Token", "${token?.accessToken}")
         val loggedIn = token != null && token.isValid
+
 
         _authState.value = if (loggedIn) {
             AuthState.Authorized
