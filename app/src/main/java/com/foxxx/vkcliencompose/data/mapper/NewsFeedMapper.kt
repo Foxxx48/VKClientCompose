@@ -1,9 +1,12 @@
 package com.foxxx.vkcliencompose.data.mapper
 
+import android.icu.text.SimpleDateFormat
 import com.foxxx.vkcliencompose.data.model.NewsFeedResponseDto
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.domain.StatisticItem
 import com.foxxx.vkcliencompose.domain.StatisticType
+import java.util.Date
+import java.util.Locale
 import kotlin.math.absoluteValue
 
 class NewsFeedMapper {
@@ -18,7 +21,7 @@ class NewsFeedMapper {
             val feedPost = FeedPost(
                 id = post.id,
                 communityName = group.name,
-                publicationDate = post.date.toString(),
+                publicationDate = mapTimeStampToDate(post.date * 1000),
                 communityImageUrl = group.imageUrl,
                 contentText = post.text,
                 contentImageUrl = post.attachments?.firstOrNull()?.photo?.photoUrls?.lastOrNull()?.url,
@@ -32,5 +35,10 @@ class NewsFeedMapper {
             result.add(feedPost)
         }
         return result
+    }
+
+    private fun mapTimeStampToDate(timeStamp: Long): String {
+        val date = Date(timeStamp)
+        return SimpleDateFormat("d MMMM yyyy, HH:mm", Locale.getDefault()).format(date)
     }
 }

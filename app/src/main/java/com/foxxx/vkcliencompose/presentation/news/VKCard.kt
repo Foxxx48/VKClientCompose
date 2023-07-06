@@ -32,14 +32,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.foxxx.vkcliencompose.R
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.domain.StatisticItem
 import com.foxxx.vkcliencompose.domain.StatisticType
-import com.foxxx.vkcliencompose.ui.theme.VKClientComposeTheme
 
 @Composable
 fun VKCard(
@@ -50,11 +49,11 @@ fun VKCard(
     onCommentClickListener: (StatisticItem) -> Unit,
     onLikeClickListener: (StatisticItem) -> Unit,
 
-) {
+    ) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(6.dp),
-        ) {
+    ) {
 
         Column(
             modifier = Modifier
@@ -74,12 +73,12 @@ fun VKCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Image(
+            AsyncImage(
+                model = feedPost.contentImageUrl,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(400.dp)
                     .border(2.dp, Color.Black),
-                painter = painterResource(id = feedPost.contentImageResId),
                 contentDescription = "poster",
                 contentScale = ContentScale.Fit,
             )
@@ -119,7 +118,7 @@ private fun Statistics(
                 .weight(1f),
         ) {
             val viewsItem = statistics.getItemByType(StatisticType.VIEWS)
-            ViewsCountInfo(views = viewsItem.count.toString(),
+            ViewsCountInfo(views = formatStatisticCount(viewsItem.count),
                 onItemClickListener = {
                     Log.d("Test", "SMCard ViewsCountInfo Clicked")
                     onViewClickListener(viewsItem)
@@ -135,17 +134,17 @@ private fun Statistics(
             val commentsItem = statistics.getItemByType(StatisticType.COMMENTS)
             val likesItem = statistics.getItemByType(StatisticType.LIKES)
 
-            SharesCountInfo(shares = sharesItem.count.toString(),
+            SharesCountInfo(shares = formatStatisticCount(sharesItem.count),
                 onItemClickListener = {
                     Log.d("Test", "SMCard ShareCountInfo Clicked")
                     onShareClickListener(sharesItem)
                 })
-            CommentsCountInfo(comments = commentsItem.count.toString(),
+            CommentsCountInfo(comments = formatStatisticCount(commentsItem.count),
                 onItemClickListener = {
                     Log.d("Test", "SMCard CommentsCountInfo Clicked")
                     onCommentClickListener(commentsItem)
                 })
-            LikesCountInfo(likes = likesItem.count.toString(),
+            LikesCountInfo(likes = formatStatisticCount(likesItem.count),
                 onItemClickListener = {
                     Log.d("Test", "SMCard LikesCountInfo Clicked")
                     onLikeClickListener(likesItem)
@@ -156,6 +155,16 @@ private fun Statistics(
 
 private fun List<StatisticItem>.getItemByType(type: StatisticType): StatisticItem {
     return this.find { it.type == type } ?: throw IllegalStateException("Wrong type")
+}
+
+private fun formatStatisticCount(count: Int): String {
+    return if (count > 100_000) {
+        String.format("%sK", (count / 1000))
+    } else if (count > 1000) {
+        String.format("%.1fK", (count / 1000f))
+    } else {
+        count.toString()
+    }
 }
 
 
@@ -169,14 +178,13 @@ private fun PostHeader(
         verticalAlignment = Alignment.CenterVertically,
 
         ) {
-        Image(
+        AsyncImage(
+            model = feedPost.communityImageUrl,
             modifier = Modifier
                 .size(60.dp)
                 .clip(CircleShape)
                 .background(Color.White)
                 .padding(8.dp),
-
-            painter = painterResource(id = feedPost.avatarResId),
             contentDescription = ""
         )
 
@@ -308,6 +316,7 @@ private fun LikesCountInfo(
         modifier = Modifier.clickable {
             Log.d("Test", "Likes modifier clicked")
             onItemClickListener()
+
         }
     ) {
         Text(
@@ -327,38 +336,46 @@ private fun LikesCountInfo(
     }
 }
 
-@Preview
-@Composable
-fun PreviewSMCLightTheme() {
+//@Preview
+//@Composable
+//fun PreviewSMCLightTheme() {
+//
+//    VKClientComposeTheme(
+//        darkTheme = false,
+//        dynamicColor = false
+//    ) {
+//        VKCard(feedPost = FeedPost(
+//            id="1",
+//            communityName = "trinity",
+//            publicationDate = "12",
+//            communityImageUrl = "",
+//            contentText = "Lorem ipsum",
+//            contentImageUrl = "",
+//            statistics = emptyList()
+//        ),
+//            onViewClickListener = {},
+//            onShareClickListener = {},
+//            onCommentClickListener = {},
+//            onLikeClickListener = {})
+//
+//    }
+//}
 
-    VKClientComposeTheme(
-        darkTheme = false,
-        dynamicColor = false
-    ) {
-        VKCard(feedPost = FeedPost(),
-            onViewClickListener = {},
-            onShareClickListener = {},
-            onCommentClickListener = {},
-            onLikeClickListener = {})
-
-    }
-}
-
-@Preview
-@Composable
-fun PreviewSMCDarkTheme() {
-    VKClientComposeTheme(
-        darkTheme = true,
-        dynamicColor = false
-    ) {
-        VKCard(feedPost = FeedPost(),
-            onViewClickListener = {},
-            onShareClickListener = {},
-            onCommentClickListener = {},
-            onLikeClickListener = {})
-
-    }
-}
+//@Preview
+//@Composable
+//fun PreviewSMCDarkTheme() {
+//    VKClientComposeTheme(
+//        darkTheme = true,
+//        dynamicColor = false
+//    ) {
+//        VKCard(feedPost = FeedPost(),
+//            onViewClickListener = {},
+//            onShareClickListener = {},
+//            onCommentClickListener = {},
+//            onLikeClickListener = {})
+//
+//    }
+//}
 
 @Composable
 fun BoxColors() {
