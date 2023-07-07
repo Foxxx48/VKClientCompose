@@ -44,6 +44,7 @@ fun NewsFeedScreen(
                 }
             )
         }
+
         NewsFeedScreenState.Initial -> {
 
         }
@@ -115,12 +116,10 @@ private fun FeedPosts(
                     },
                     onCommentClickListener = {
                         onCommentsClickListener(feedPost)
-                                             },
-                    onLikeClickListener = { statisticItem ->
-                        viewModel.updateCount(
-                            feedPost,
-                            statisticItem
-                        )
+                    },
+                    onLikeClickListener = {_ ->
+                        viewModel.changeLikeStatus(feedPost)
+
                     }
                 )
             }

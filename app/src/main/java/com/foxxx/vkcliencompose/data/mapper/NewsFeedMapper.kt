@@ -21,6 +21,7 @@ class NewsFeedMapper {
             val feedPost = FeedPost(
                 id = post.id,
                 communityName = group.name,
+                communityId = post.communityId,
                 publicationDate = mapTimeStampToDate(post.date * 1000),
                 communityImageUrl = group.imageUrl,
                 contentText = post.text,

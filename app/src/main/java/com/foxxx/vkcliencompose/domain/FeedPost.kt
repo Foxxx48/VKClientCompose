@@ -8,8 +8,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FeedPost(
-    val id: String,
+    val id: Long,
     val communityName: String,
+    val communityId: Long,
     val publicationDate: String,
     val communityImageUrl: String,
     val contentText: String,
