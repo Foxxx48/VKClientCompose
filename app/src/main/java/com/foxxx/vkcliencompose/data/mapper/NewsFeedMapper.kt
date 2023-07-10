@@ -27,13 +27,15 @@ class NewsFeedMapper {
                 contentText = post.text,
                 contentImageUrl = post.attachments?.firstOrNull()?.photo?.photoUrls?.lastOrNull()?.url,
                 statistics = listOf(
-                    StatisticItem(type = StatisticType.LIKES, post.likes.count),
                     StatisticItem(type = StatisticType.VIEWS, post.views.count),
                     StatisticItem(type = StatisticType.SHARES, post.reposts.count),
-                    StatisticItem(type = StatisticType.COMMENTS, post.comments.count)
-                )
+                    StatisticItem(type = StatisticType.COMMENTS, post.comments.count),
+                    StatisticItem(type = StatisticType.LIKES, post.likes.count),
+                ),
+                isLiked = post.likes.userLikes > 0
             )
             result.add(feedPost)
+
         }
         return result
     }

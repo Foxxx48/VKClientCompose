@@ -39,6 +39,7 @@ import com.foxxx.vkcliencompose.R
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.domain.StatisticItem
 import com.foxxx.vkcliencompose.domain.StatisticType
+import com.foxxx.vkcliencompose.ui.theme.DarkRed
 
 @Composable
 fun VKCard(
@@ -48,8 +49,9 @@ fun VKCard(
     onShareClickListener: (StatisticItem) -> Unit,
     onCommentClickListener: (StatisticItem) -> Unit,
     onLikeClickListener: (StatisticItem) -> Unit,
+    isLiked: Boolean
 
-    ) {
+) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(6.dp),
@@ -90,7 +92,9 @@ fun VKCard(
                 onViewClickListener = onViewClickListener,
                 onShareClickListener = onShareClickListener,
                 onCommentClickListener = onCommentClickListener,
-                onLikeClickListener = onLikeClickListener
+                onLikeClickListener = onLikeClickListener,
+                isLiked = isLiked
+
             )
             //            BoxColors()
         }
@@ -104,6 +108,7 @@ private fun Statistics(
     onShareClickListener: (StatisticItem) -> Unit,
     onCommentClickListener: (StatisticItem) -> Unit,
     onLikeClickListener: (StatisticItem) -> Unit,
+    isLiked: Boolean
 ) {
     Row(
         modifier = Modifier
@@ -144,11 +149,15 @@ private fun Statistics(
                     Log.d("Test", "SMCard CommentsCountInfo Clicked")
                     onCommentClickListener(commentsItem)
                 })
-            LikesCountInfo(likes = formatStatisticCount(likesItem.count),
+            LikesCountInfo(
+                iconResId = if (isLiked) R.drawable.ic_like_set else R.drawable.ic_like ,
+                text = formatStatisticCount(likesItem.count),
                 onItemClickListener = {
-                    Log.d("Test", "SMCard LikesCountInfo Clicked")
                     onLikeClickListener(likesItem)
-                })
+                },
+                tint = if (isLiked) DarkRed else MaterialTheme.colorScheme.onSecondary
+            )
+
         }
     }
 }
@@ -309,18 +318,18 @@ private fun CommentsCountInfo(
 
 @Composable
 private fun LikesCountInfo(
-    likes: String,
-    onItemClickListener: () -> Unit
+    iconResId: Int,
+    text: String,
+    onItemClickListener: () -> Unit,
+    tint: Color = MaterialTheme.colorScheme.onSecondary
 ) {
     Row(
         modifier = Modifier.clickable {
-            Log.d("Test", "Likes modifier clicked")
             onItemClickListener()
-
         }
     ) {
         Text(
-            text = likes,
+            text = text,
             fontStyle = FontStyle.Normal,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
@@ -328,54 +337,43 @@ private fun LikesCountInfo(
         )
 
         Spacer(modifier = Modifier.width(6.dp))
-        Image(
-            painter = painterResource(id = R.drawable.ic_like),
-            contentDescription = ""
+        Icon(
+            modifier = Modifier
+                .size(20.dp),
+            painter = painterResource(id = iconResId),
+            contentDescription = null,
+            tint = tint
         )
 
     }
 }
 
-//@Preview
-//@Composable
-//fun PreviewSMCLightTheme() {
-//
-//    VKClientComposeTheme(
-//        darkTheme = false,
-//        dynamicColor = false
-//    ) {
-//        VKCard(feedPost = FeedPost(
-//            id="1",
-//            communityName = "trinity",
-//            publicationDate = "12",
-//            communityImageUrl = "",
-//            contentText = "Lorem ipsum",
-//            contentImageUrl = "",
-//            statistics = emptyList()
-//        ),
-//            onViewClickListener = {},
-//            onShareClickListener = {},
-//            onCommentClickListener = {},
-//            onLikeClickListener = {})
-//
-//    }
-//}
-
-//@Preview
-//@Composable
-//fun PreviewSMCDarkTheme() {
-//    VKClientComposeTheme(
-//        darkTheme = true,
-//        dynamicColor = false
-//    ) {
-//        VKCard(feedPost = FeedPost(),
-//            onViewClickListener = {},
-//            onShareClickListener = {},
-//            onCommentClickListener = {},
-//            onLikeClickListener = {})
-//
-//    }
-//}
+@Composable
+private fun IconWithText(
+    iconResId: Int,
+    text: String,
+    onItemClickListener: () -> Unit,
+    tint: Color = MaterialTheme.colorScheme.onSecondary
+) {
+    Row(
+        modifier = Modifier.clickable {
+            onItemClickListener()
+        },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier.size(20.dp),
+            painter = painterResource(id = iconResId),
+            contentDescription = null,
+            tint = tint
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = text,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+    }
+}
 
 @Composable
 fun BoxColors() {

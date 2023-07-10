@@ -34,7 +34,8 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
 
     fun changeLikeStatus(feedPost: FeedPost) {
         viewModelScope.launch {
-            repository.addLike(feedPost)
+            repository.changeLikeStatus(feedPost)
+            _screenState.value = NewsFeedScreenState.Posts(posts = repository.feedPosts)
         }
     }
 

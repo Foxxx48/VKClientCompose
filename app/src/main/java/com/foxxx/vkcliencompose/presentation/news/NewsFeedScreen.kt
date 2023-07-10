@@ -120,7 +120,8 @@ private fun FeedPosts(
                     onLikeClickListener = {_ ->
                         viewModel.changeLikeStatus(feedPost)
 
-                    }
+                    },
+                    isLiked = feedPost.isLiked
                 )
             }
         }
