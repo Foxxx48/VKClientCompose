@@ -1,6 +1,7 @@
 package com.foxxx.vkcliencompose.presentation.comments
 
 
+import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -19,9 +20,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.foxxx.vkcliencompose.R
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.ui.VKCommentCard
 
@@ -31,8 +35,11 @@ fun CommentsScreen(
     onBackPressed: () -> Unit,
     feedPost: FeedPost
 ) {
+
     val viewModel: CommentsViewModel = viewModel(
-        factory = CommentsViewModelFactory(feedPost)
+        factory = CommentsViewModelFactory(
+            feedPost,
+        application = LocalContext.current.applicationContext as Application)
     )
     val screenState =
         viewModel.screenState.observeAsState(CommentsScreenState.Initial)
@@ -43,7 +50,7 @@ fun CommentsScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            text = "${currentState.feedPost.contentText}: ${currentState.feedPost.id}",
+                            text = stringResource(R.string.comments_name),
                             fontSize = 18.sp,
                             color = MaterialTheme.colorScheme.onPrimary
                         )
@@ -85,22 +92,6 @@ fun CommentsScreen(
     }
 }
 
-//@Preview
-//@Composable
-//fun PreviewCommentScreenLightTheme() {
-//    VKClientComposeTheme(
-//        darkTheme = false,
-//        dynamicColor = false
-//    ) {
-//        val comments = mutableListOf<PostComment>().apply {
-//            repeat(10) {
-//                add(PostComment(id = it))
-//            }
-//        }
-//        CommentsScreen(feedPost = FeedPost(),
-//        onBackPressed = {})
-//    }
-//}
 
 
 

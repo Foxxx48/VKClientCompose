@@ -1,7 +1,5 @@
 package com.foxxx.vkcliencompose.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,14 +15,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.foxxx.vkcliencompose.domain.PostComment
-import com.foxxx.vkcliencompose.ui.theme.VKClientComposeTheme
 
 
 @Composable
@@ -38,13 +33,11 @@ fun VKCommentCard(
                 .padding(8.dp)
                 .fillMaxWidth(),
             ) {
-            Image(
+            AsyncImage(
                 modifier = Modifier
-                    .size(24.dp)
-                    .clip(CircleShape)
-                    .background(Color.White)
-                    .padding(8.dp),
-                painter = painterResource(id = postComment.authorAvatarId),
+                    .size(48.dp)
+                    .clip(CircleShape),
+                model = postComment.authorAvatarUrl,
                 contentDescription = ""
             )
 
@@ -56,7 +49,7 @@ fun VKCommentCard(
             ) {
 
                 Text(
-                    text = "${postComment.authorName} CommentId: ${postComment.id}",
+                    text = postComment.authorName,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimary
@@ -83,24 +76,3 @@ fun VKCommentCard(
     }
 }
 
-@Preview
-@Composable
-fun PreviewDarkTheme() {
-    VKClientComposeTheme(
-        darkTheme = true,
-        dynamicColor = false
-    ) {
-        VKCommentCard(postComment = PostComment())
-    }
-}
-
-@Preview
-@Composable
-fun PreviewLightTheme() {
-    VKClientComposeTheme(
-        darkTheme = false,
-        dynamicColor = false
-    ) {
-        VKCommentCard(postComment = PostComment())
-    }
-}

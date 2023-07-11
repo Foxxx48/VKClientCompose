@@ -179,9 +179,7 @@ private fun PostHeader(
             model = feedPost.communityImageUrl,
             modifier = Modifier
                 .size(60.dp)
-                .clip(CircleShape)
-                .background(Color.White)
-                .padding(8.dp),
+                .clip(CircleShape),
             contentDescription = ""
         )
 

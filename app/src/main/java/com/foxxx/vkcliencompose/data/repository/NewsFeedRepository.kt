@@ -1,9 +1,11 @@
 package com.foxxx.vkcliencompose.data.repository
 
 import android.app.Application
+import com.foxxx.vkcliencompose.data.mapper.CommentsMapper
 import com.foxxx.vkcliencompose.data.mapper.NewsFeedMapper
 import com.foxxx.vkcliencompose.data.network.ApiFactory
 import com.foxxx.vkcliencompose.domain.FeedPost
+import com.foxxx.vkcliencompose.domain.PostComment
 import com.foxxx.vkcliencompose.domain.StatisticItem
 import com.foxxx.vkcliencompose.domain.StatisticType
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
@@ -15,10 +17,15 @@ class NewsFeedRepository(application: Application) {
 
     private val apiService = ApiFactory.apiService
     private val mapper = NewsFeedMapper()
+    private val commentsMapper = CommentsMapper()
 
     private val _feedPosts = mutableListOf<FeedPost>()
     val feedPosts: List<FeedPost>
         get() = _feedPosts.toList()
+
+    private val _comments = mutableListOf<PostComment>()
+    val comments: List<PostComment>
+        get() = _comments.toList()
 
     private var nextFrom: String? = null
 
@@ -83,6 +90,22 @@ class NewsFeedRepository(application: Application) {
         )
 
         _feedPosts.remove(feedPost)
+    }
+
+    suspend fun loadComments(feedPost: FeedPost): List<PostComment> {
+        val response = apiService.getComments(
+            token = getAccessToken(),
+            ownerId = feedPost.communityId,
+            postId = feedPost.id
+        )
+
+        val result =
+            commentsMapper.mapResponseToPostComment(response)
+
+        _comments.addAll(result)
+
+        return comments
+
 
     }
 }
