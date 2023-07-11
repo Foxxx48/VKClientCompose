@@ -74,6 +74,17 @@ class NewsFeedRepository(application: Application) {
 
         _feedPosts[postIndex] = newPost
     }
+
+    suspend fun deleteFeedPost(feedPost: FeedPost) {
+        apiService.ignorePost(
+            token = getAccessToken(),
+            ownerId = feedPost.communityId,
+            postId = feedPost.id
+        )
+
+        _feedPosts.remove(feedPost)
+
+    }
 }
 
 

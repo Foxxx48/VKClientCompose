@@ -22,6 +22,7 @@ import com.foxxx.vkcliencompose.navigation.AppNavGraph
 import com.foxxx.vkcliencompose.navigation.rememberNavigationState
 import com.foxxx.vkcliencompose.presentation.comments.CommentsScreen
 import com.foxxx.vkcliencompose.presentation.news.NewsFeedScreen
+import com.foxxx.vkcliencompose.ui.theme.DarkBlue
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -31,7 +32,9 @@ fun MainScreen() {
 
     Scaffold(
         bottomBar = {
-            BottomNavigation() {
+            BottomNavigation(
+                backgroundColor = DarkBlue
+            ) {
                 val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
 
 
@@ -64,8 +67,8 @@ fun MainScreen() {
                                 text = stringResource(id = item.titleResId),
                             )
                         },
-                        selectedContentColor = Color.Red,
-                        unselectedContentColor = Color.Green,
+                        selectedContentColor = Color.White,
+                        unselectedContentColor = Color.Black,
                     )
                 }
             }
@@ -115,9 +118,7 @@ private fun TextCount(name: String) {
 //        darkTheme = false,
 //        dynamicColor = false
 //    ) {
-//        MainScreen(MainViewModel(),
-//            content = {}
-//        )
+//        MainScreen()
 //    }
 //}
 //
@@ -128,9 +129,7 @@ private fun TextCount(name: String) {
 //        darkTheme = true,
 //        dynamicColor = false
 //    ) {
-//        MainScreen(MainViewModel(),
-//            content = {}
-//        )
+//        MainScreen()
 //    }
 //}
 

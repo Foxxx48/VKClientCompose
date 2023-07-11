@@ -52,8 +52,20 @@ fun NewsFeedScreen(
             )
         }
 
-        NewsFeedScreenState.Initial -> {
+        NewsFeedScreenState.Initial -> {}
 
+        NewsFeedScreenState.Loading -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+//                    .wrapContentHeight()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    color = DarkBlue
+                )
+            }
         }
     }
 }
@@ -84,7 +96,7 @@ private fun FeedPosts(
             val dismissState = rememberDismissState()
 
             if (dismissState.isDismissed(DismissDirection.EndToStart)) {
-                viewModel.deleteVKModel(feedPost)
+                viewModel.removePost(feedPost)
             }
             SwipeToDismiss(
                 state = dismissState,
@@ -110,18 +122,6 @@ private fun FeedPosts(
             ) {
                 VKCard(
                     feedPost = feedPost,
-                    onViewClickListener = { statisticItem ->
-                        viewModel.updateCount(
-                            feedPost,
-                            statisticItem
-                        )
-                    },
-                    onShareClickListener = { statisticItem ->
-                        viewModel.updateCount(
-                            feedPost,
-                            statisticItem
-                        )
-                    },
                     onCommentClickListener = {
                         onCommentsClickListener(feedPost)
                     },

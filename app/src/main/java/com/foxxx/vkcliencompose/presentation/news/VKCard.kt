@@ -3,7 +3,6 @@ package com.foxxx.vkcliencompose.ui
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,8 +44,6 @@ import com.foxxx.vkcliencompose.ui.theme.DarkRed
 fun VKCard(
     modifier: Modifier = Modifier,
     feedPost: FeedPost,
-    onViewClickListener: (StatisticItem) -> Unit,
-    onShareClickListener: (StatisticItem) -> Unit,
     onCommentClickListener: (StatisticItem) -> Unit,
     onLikeClickListener: (StatisticItem) -> Unit,
     isLiked: Boolean
@@ -79,8 +76,7 @@ fun VKCard(
                 model = feedPost.contentImageUrl,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(400.dp)
-                    .border(2.dp, Color.Black),
+                    .height(400.dp),
                 contentDescription = "poster",
                 contentScale = ContentScale.Fit,
             )
@@ -89,8 +85,6 @@ fun VKCard(
 
             Statistics(
                 statistics = feedPost.statistics,
-                onViewClickListener = onViewClickListener,
-                onShareClickListener = onShareClickListener,
                 onCommentClickListener = onCommentClickListener,
                 onLikeClickListener = onLikeClickListener,
                 isLiked = isLiked
@@ -104,8 +98,6 @@ fun VKCard(
 @Composable
 private fun Statistics(
     statistics: List<StatisticItem>,
-    onViewClickListener: (StatisticItem) -> Unit,
-    onShareClickListener: (StatisticItem) -> Unit,
     onCommentClickListener: (StatisticItem) -> Unit,
     onLikeClickListener: (StatisticItem) -> Unit,
     isLiked: Boolean
@@ -123,11 +115,9 @@ private fun Statistics(
                 .weight(1f),
         ) {
             val viewsItem = statistics.getItemByType(StatisticType.VIEWS)
-            ViewsCountInfo(views = formatStatisticCount(viewsItem.count),
-                onItemClickListener = {
-                    Log.d("Test", "SMCard ViewsCountInfo Clicked")
-                    onViewClickListener(viewsItem)
-                })
+            ViewsCountInfo(
+                views = formatStatisticCount(viewsItem.count)
+            )
         }
 
         Row(
@@ -139,18 +129,16 @@ private fun Statistics(
             val commentsItem = statistics.getItemByType(StatisticType.COMMENTS)
             val likesItem = statistics.getItemByType(StatisticType.LIKES)
 
-            SharesCountInfo(shares = formatStatisticCount(sharesItem.count),
-                onItemClickListener = {
-                    Log.d("Test", "SMCard ShareCountInfo Clicked")
-                    onShareClickListener(sharesItem)
-                })
+            SharesCountInfo(
+                shares = formatStatisticCount(sharesItem.count),
+            )
             CommentsCountInfo(comments = formatStatisticCount(commentsItem.count),
                 onItemClickListener = {
                     Log.d("Test", "SMCard CommentsCountInfo Clicked")
                     onCommentClickListener(commentsItem)
                 })
             LikesCountInfo(
-                iconResId = if (isLiked) R.drawable.ic_like_set else R.drawable.ic_like ,
+                iconResId = if (isLiked) R.drawable.ic_like_set else R.drawable.ic_like,
                 text = formatStatisticCount(likesItem.count),
                 onItemClickListener = {
                     onLikeClickListener(likesItem)
@@ -233,14 +221,8 @@ private fun PostHeader(
 @Composable
 private fun ViewsCountInfo(
     views: String,
-    onItemClickListener: () -> Unit
 ) {
-    Row(
-        modifier = Modifier.clickable {
-            Log.d("Test", "Views modifier clicked")
-            onItemClickListener()
-        }
-    ) {
+    Row() {
         Text(
             text = views,
             fontStyle = FontStyle.Normal,
@@ -262,14 +244,8 @@ private fun ViewsCountInfo(
 @Composable
 private fun SharesCountInfo(
     shares: String,
-    onItemClickListener: () -> Unit
 ) {
-    Row(
-        modifier = Modifier.clickable {
-            Log.d("Test", "Shares modifier clicked")
-            onItemClickListener()
-        }
-    ) {
+    Row() {
         Text(
             text = shares,
             fontStyle = FontStyle.Normal,
