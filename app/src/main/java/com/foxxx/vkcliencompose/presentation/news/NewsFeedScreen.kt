@@ -4,17 +4,22 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.Text
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.ui.VKCard
+import com.foxxx.vkcliencompose.ui.theme.DarkBlue
 
 
 @Composable
@@ -41,7 +47,8 @@ fun NewsFeedScreen(
                 posts = currentState.posts,
                 onCommentsClickListener = {
                     onCommentsClickListener(it)
-                }
+                },
+                nextDataIsLoading = currentState.nextDataIsLoading
             )
         }
 
@@ -56,7 +63,8 @@ fun NewsFeedScreen(
 private fun FeedPosts(
     viewModel: NewsFeedViewModel,
     posts: List<FeedPost>,
-    onCommentsClickListener: (FeedPost) -> Unit
+    onCommentsClickListener: (FeedPost) -> Unit,
+    nextDataIsLoading: Boolean
 ) {
     LazyColumn(
         contentPadding = PaddingValues(
@@ -117,12 +125,32 @@ private fun FeedPosts(
                     onCommentClickListener = {
                         onCommentsClickListener(feedPost)
                     },
-                    onLikeClickListener = {_ ->
+                    onLikeClickListener = { _ ->
                         viewModel.changeLikeStatus(feedPost)
 
                     },
                     isLiked = feedPost.isLiked
                 )
+            }
+        }
+
+        item {
+            if (nextDataIsLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = DarkBlue
+                    )
+                }
+            } else {
+                SideEffect {
+                    viewModel.loadNextRecommendations()
+                }
             }
         }
     }
