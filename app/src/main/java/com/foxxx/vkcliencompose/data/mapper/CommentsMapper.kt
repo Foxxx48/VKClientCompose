@@ -9,8 +9,6 @@ import java.util.Locale
 class CommentsMapper {
     fun mapResponseToPostComment(responseDto: CommentsResponseDto): List<PostComment> {
         val result = mutableListOf<PostComment>()
-
-
         val comments = responseDto.commentsContentDto.comments
         val profiles = responseDto.commentsContentDto.profiles
 

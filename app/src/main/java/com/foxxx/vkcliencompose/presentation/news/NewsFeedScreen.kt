@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.ui.VKCard
@@ -37,6 +37,8 @@ fun NewsFeedScreen(
     onCommentsClickListener: (FeedPost) -> Unit
 ) {
     val viewModel: NewsFeedViewModel = viewModel()
+
+//    val screenState = viewModel.screenState.collectAsState(initial = NewsFeedScreenState.Initial)
     val screenState = viewModel.screenState.observeAsState(NewsFeedScreenState.Initial)
 
     when (val currentState = screenState.value) {
@@ -73,7 +75,7 @@ fun NewsFeedScreen(
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 private fun FeedPosts(
-    viewModel: NewsFeedViewModel,
+    viewModel: AndroidViewModel,
     posts: List<FeedPost>,
     onCommentsClickListener: (FeedPost) -> Unit,
     nextDataIsLoading: Boolean
@@ -96,7 +98,7 @@ private fun FeedPosts(
             val dismissState = rememberDismissState()
 
             if (dismissState.isDismissed(DismissDirection.EndToStart)) {
-                viewModel.removePost(feedPost)
+                (viewModel as NewsFeedViewModel).removePost(feedPost)
             }
             SwipeToDismiss(
                 state = dismissState,
@@ -126,7 +128,7 @@ private fun FeedPosts(
                         onCommentsClickListener(feedPost)
                     },
                     onLikeClickListener = { _ ->
-                        viewModel.changeLikeStatus(feedPost)
+                        (viewModel as NewsFeedViewModel).changeLikeStatus(feedPost)
 
                     },
                     isLiked = feedPost.isLiked
@@ -149,7 +151,7 @@ private fun FeedPosts(
                 }
             } else {
                 SideEffect {
-                    viewModel.loadNextRecommendations()
+                    (viewModel as NewsFeedViewModel).loadNextRecommendations()
                 }
             }
         }

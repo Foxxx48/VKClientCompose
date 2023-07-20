@@ -76,7 +76,6 @@ class NewsFeedRepository(application: Application) {
         }
         val newPost = feedPost.copy(statistics = newStatistics, isLiked = !feedPost.isLiked)
 
-
         val postIndex = _feedPosts.indexOf(feedPost)
 
         _feedPosts[postIndex] = newPost
@@ -105,8 +104,6 @@ class NewsFeedRepository(application: Application) {
         _comments.addAll(result)
 
         return comments
-
-
     }
 }
 
