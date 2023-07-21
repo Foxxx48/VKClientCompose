@@ -1,5 +1,6 @@
 package com.foxxx.vkcliencompose.presentation.news
 
+import android.app.Application
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,13 +20,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.ui.VKCard
@@ -36,10 +38,19 @@ import com.foxxx.vkcliencompose.ui.theme.DarkBlue
 fun NewsFeedScreen(
     onCommentsClickListener: (FeedPost) -> Unit
 ) {
-    val viewModel: NewsFeedViewModel = viewModel()
+//    val viewModel = ViewModelProvider(owner = ViewModelStore.,
+//        factory = NewsFeedViewModelFactory(
+//            application = LocalContext.current.applicationContext as Application
+//        ))[NewsFeedViewModelWithFlow::class.java]
+
+    val viewModel: NewsFeedViewModelWithFlow = viewModel(
+        factory = NewsFeedViewModelFactory(
+            application = LocalContext.current.applicationContext as Application
+        )
+    )
 
 //    val screenState = viewModel.screenState.collectAsState(initial = NewsFeedScreenState.Initial)
-    val screenState = viewModel.screenState.observeAsState(NewsFeedScreenState.Initial)
+    val screenState = viewModel.screenState.collectAsState(initial = NewsFeedScreenState.Initial )
 
     when (val currentState = screenState.value) {
         is NewsFeedScreenState.Posts -> {
@@ -75,7 +86,7 @@ fun NewsFeedScreen(
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 private fun FeedPosts(
-    viewModel: AndroidViewModel,
+    viewModel: ViewModel,
     posts: List<FeedPost>,
     onCommentsClickListener: (FeedPost) -> Unit,
     nextDataIsLoading: Boolean
@@ -98,7 +109,7 @@ private fun FeedPosts(
             val dismissState = rememberDismissState()
 
             if (dismissState.isDismissed(DismissDirection.EndToStart)) {
-                (viewModel as NewsFeedViewModel).removePost(feedPost)
+                (viewModel as NewsFeedViewModelWithFlow).removePost(feedPost)
             }
             SwipeToDismiss(
                 state = dismissState,
@@ -128,7 +139,7 @@ private fun FeedPosts(
                         onCommentsClickListener(feedPost)
                     },
                     onLikeClickListener = { _ ->
-                        (viewModel as NewsFeedViewModel).changeLikeStatus(feedPost)
+                        (viewModel as NewsFeedViewModelWithFlow).changeLikeStatus(feedPost)
 
                     },
                     isLiked = feedPost.isLiked
@@ -151,7 +162,7 @@ private fun FeedPosts(
                 }
             } else {
                 SideEffect {
-                    (viewModel as NewsFeedViewModel).loadNextRecommendations()
+                    (viewModel as NewsFeedViewModelWithFlow).loadNextRecommendations()
                 }
             }
         }

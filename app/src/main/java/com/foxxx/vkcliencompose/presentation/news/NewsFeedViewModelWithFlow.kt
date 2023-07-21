@@ -1,11 +1,13 @@
 package com.foxxx.vkcliencompose.presentation.news
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.foxxx.vkcliencompose.data.repository.NewsFeedRepositoryWithFlow
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.extentions.mergeWith
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -13,6 +15,11 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class NewsFeedViewModelWithFlow(application: Application) : AndroidViewModel(application) {
+
+    private val exceptionHandler =
+        CoroutineExceptionHandler { _, _->
+            Log.d("NewsFeedViewModelWithFlow", "Exception caught by exception handler")
+        }
 
     private val repository = NewsFeedRepositoryWithFlow(application)
 
@@ -39,13 +46,13 @@ class NewsFeedViewModelWithFlow(application: Application) : AndroidViewModel(app
     }
 
     fun changeLikeStatus(feedPost: FeedPost) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.changeLikeStatus(feedPost)
         }
     }
 
     fun removePost(feedPost: FeedPost) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.deletePost(feedPost)
         }
     }
