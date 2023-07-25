@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.ui.VKCard
@@ -38,7 +37,7 @@ import com.foxxx.vkcliencompose.ui.theme.DarkBlue
 fun NewsFeedScreen(
     onCommentsClickListener: (FeedPost) -> Unit
 ) {
-//    val viewModel = ViewModelProvider(owner = ViewModelStore.,
+//    val viewModel = ViewModelProvider(owner = checkNotNull(LocalViewModelStoreOwner.current),
 //        factory = NewsFeedViewModelFactory(
 //            application = LocalContext.current.applicationContext as Application
 //        ))[NewsFeedViewModelWithFlow::class.java]
@@ -49,8 +48,8 @@ fun NewsFeedScreen(
         )
     )
 
-//    val screenState = viewModel.screenState.collectAsState(initial = NewsFeedScreenState.Initial)
-    val screenState = viewModel.screenState.collectAsState(initial = NewsFeedScreenState.Initial )
+//    val screenState = viewModel.screenState.observeAsState(CommentsScreenState.Initial)
+    val screenState = viewModel.screenState.collectAsState(initial = NewsFeedScreenState.Initial)
 
     when (val currentState = screenState.value) {
         is NewsFeedScreenState.Posts -> {
@@ -86,7 +85,7 @@ fun NewsFeedScreen(
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 private fun FeedPosts(
-    viewModel: ViewModel,
+    viewModel: NewsFeedViewModelWithFlow,
     posts: List<FeedPost>,
     onCommentsClickListener: (FeedPost) -> Unit,
     nextDataIsLoading: Boolean
@@ -109,7 +108,7 @@ private fun FeedPosts(
             val dismissState = rememberDismissState()
 
             if (dismissState.isDismissed(DismissDirection.EndToStart)) {
-                (viewModel as NewsFeedViewModelWithFlow).removePost(feedPost)
+                viewModel.removePost(feedPost)
             }
             SwipeToDismiss(
                 state = dismissState,
@@ -139,7 +138,7 @@ private fun FeedPosts(
                         onCommentsClickListener(feedPost)
                     },
                     onLikeClickListener = { _ ->
-                        (viewModel as NewsFeedViewModelWithFlow).changeLikeStatus(feedPost)
+                        viewModel.changeLikeStatus(feedPost)
 
                     },
                     isLiked = feedPost.isLiked
@@ -162,7 +161,7 @@ private fun FeedPosts(
                 }
             } else {
                 SideEffect {
-                    (viewModel as NewsFeedViewModelWithFlow).loadNextRecommendations()
+                    viewModel.loadNextRecommendations()
                 }
             }
         }

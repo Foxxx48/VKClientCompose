@@ -10,10 +10,12 @@ class NewsFeedViewModelFactory(
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
-        if (modelClass.isInstance(NewsFeedViewModel::class.java)) {
+
+
+        if (modelClass ==NewsFeedViewModel::class.java) {
             return NewsFeedViewModel(application) as T
         }
-        if (modelClass.isInstance(NewsFeedViewModelWithFlow::class.java)) {
+        if (modelClass == NewsFeedViewModelWithFlow::class.java) {
             return NewsFeedViewModelWithFlow(application) as T
         }
         throw  RuntimeException("Wrong ViewModel")
