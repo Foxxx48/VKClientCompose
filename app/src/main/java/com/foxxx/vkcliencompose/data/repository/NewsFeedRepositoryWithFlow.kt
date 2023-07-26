@@ -1,6 +1,7 @@
 package com.foxxx.vkcliencompose.data.repository
 
 import android.app.Application
+import android.util.Log
 import com.foxxx.vkcliencompose.data.mapper.CommentsMapper
 import com.foxxx.vkcliencompose.data.mapper.NewsFeedMapper
 import com.foxxx.vkcliencompose.data.network.ApiFactory
@@ -9,6 +10,7 @@ import com.foxxx.vkcliencompose.domain.PostComment
 import com.foxxx.vkcliencompose.domain.StatisticItem
 import com.foxxx.vkcliencompose.domain.StatisticType
 import com.foxxx.vkcliencompose.extentions.mergeWith
+import com.foxxx.vkcliencompose.presentation.main.AuthState
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +34,36 @@ class NewsFeedRepositoryWithFlow(application: Application) {
     private val nextDataNeededEvents = MutableSharedFlow<Unit>(replay = 1)
 
     private val refreshedListFlow = MutableSharedFlow<List<FeedPost>>()
+
+    private val apiService = ApiFactory.apiService
+    private val newsFeedMapper = NewsFeedMapper()
+    private val commentsMapper = CommentsMapper()
+
+    private val _feedPosts = mutableListOf<FeedPost>()
+    private val feedPosts: List<FeedPost>
+        get() = _feedPosts.toList()
+
+    private var nextFrom: String? = null
+
+    private val authStateFlow = flow {
+        val loggedIn = token != null && token.isValid
+        if (loggedIn) {
+            emit(AuthState.Authorized)
+        } else {
+            emit(AuthState.NotAuthorized)
+        }
+    }
+
+    val stateValuesFlow: StateFlow<AuthState> = authStateFlow
+        .stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.Lazily,
+            initialValue = AuthState.Initial
+        )
+
+
+//    val authorization : StateFlow<AuthState> = authStateFlow
+//        .stateIn(scope = coroutineScope)
 
     private val loadedListFlow = flow {
         nextDataNeededEvents.emit(Unit)
@@ -58,16 +90,6 @@ class NewsFeedRepositoryWithFlow(application: Application) {
         true
     }
 
-    private val apiService = ApiFactory.apiService
-    private val newsFeedMapper = NewsFeedMapper()
-    private val commentsMapper = CommentsMapper()
-
-    private val _feedPosts = mutableListOf<FeedPost>()
-    private val feedPosts: List<FeedPost>
-        get() = _feedPosts.toList()
-
-    private var nextFrom: String? = null
-
     val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
         .mergeWith(refreshedListFlow)
         .stateIn(
@@ -75,6 +97,7 @@ class NewsFeedRepositoryWithFlow(application: Application) {
             started = SharingStarted.Lazily,
             initialValue = feedPosts
         )
+
 
     suspend fun loadNextData() {
         nextDataNeededEvents.emit(Unit)
@@ -95,6 +118,7 @@ class NewsFeedRepositoryWithFlow(application: Application) {
     }
 
     suspend fun loadComments(feedPost: FeedPost): Flow<List<PostComment>> = flow {
+        Log.d("TAG", "loadComments() - NewsFeedRepositoryWithFlow Started")
         val comments = apiService.getComments(
             token = getAccessToken(),
             ownerId = feedPost.communityId,

@@ -6,7 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.ui.LoginScreen
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     ) {
                     val viewModel: MainViewModel = viewModel()
-                    val authState = viewModel.authState.observeAsState(AuthState.Initial)
+                    val authState = viewModel.authState.collectAsState(AuthState.Initial)
                     val authLauncher = rememberLauncherForActivityResult(
                         contract = VK.getVKAuthActivityResultContract()
                     ) {

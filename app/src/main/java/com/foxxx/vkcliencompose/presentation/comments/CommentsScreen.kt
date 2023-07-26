@@ -2,6 +2,7 @@ package com.foxxx.vkcliencompose.presentation.comments
 
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -18,7 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -36,18 +37,19 @@ fun CommentsScreen(
     feedPost: FeedPost
 ) {
 
-    val viewModel: CommentsViewModelWithFlow = viewModel(
+    val viewModel: CommentsViewModel = viewModel(
         factory = CommentsViewModelFactory(
             feedPost,
         application = LocalContext.current.applicationContext as Application)
     )
-//    val screenState =
-//        viewModel.screenState.observeAsState(CommentsScreenState.Initial)
-
     val screenState =
-        viewModel.screenState.collectAsState(CommentsScreenState.Initial)
+        viewModel.screenState.observeAsState(CommentsScreenState.Initial)
+
+//    val screenState =
+//        viewModel.screenState.collectAsState(CommentsScreenState.Initial)
 
     val currentState = screenState.value
+    Log.d("TAG", "loadComments() - ${screenState.value.javaClass.canonicalName}")
     if (currentState is CommentsScreenState.Comments) {
         Scaffold(
             topBar = {
@@ -93,6 +95,8 @@ fun CommentsScreen(
                 }
             }
         }
+    } else {
+        Log.d("TAG", "loadComments() - currentState is NOT CommentsScreenState.Comments")
     }
 }
 
