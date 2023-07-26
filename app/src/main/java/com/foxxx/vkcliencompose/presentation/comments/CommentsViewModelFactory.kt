@@ -12,6 +12,15 @@ class CommentsViewModelFactory(
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
-        return CommentsViewModel(feedPost, application) as T
+        if (modelClass == CommentsViewModel::class.java) {
+            return CommentsViewModel(feedPost, application) as T
+        }
+
+        if (modelClass == CommentsViewModelWithFlow::class.java) {
+            return CommentsViewModelWithFlow(feedPost, application) as T
+        }
+
+        throw  RuntimeException("Wrong ViewModel")
+
     }
 }

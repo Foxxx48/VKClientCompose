@@ -10,8 +10,6 @@ class NewsFeedViewModelFactory(
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
-
-
         if (modelClass ==NewsFeedViewModel::class.java) {
             return NewsFeedViewModel(application) as T
         }
