@@ -6,7 +6,6 @@ import com.foxxx.vkcliencompose.data.mapper.CommentsMapper
 import com.foxxx.vkcliencompose.data.mapper.NewsFeedMapper
 import com.foxxx.vkcliencompose.data.network.ApiFactory
 import com.foxxx.vkcliencompose.domain.FeedPost
-import com.foxxx.vkcliencompose.domain.PostComment
 import com.foxxx.vkcliencompose.domain.StatisticItem
 import com.foxxx.vkcliencompose.domain.StatisticType
 import com.foxxx.vkcliencompose.extentions.mergeWith
@@ -16,7 +15,6 @@ import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -117,7 +115,7 @@ class NewsFeedRepositoryWithFlow(application: Application) {
         refreshedListFlow.emit(feedPosts)
     }
 
-    suspend fun loadComments(feedPost: FeedPost): Flow<List<PostComment>> = flow {
+   fun loadComments(feedPost: FeedPost) = flow {
         Log.d("TAG", "loadComments() - NewsFeedRepositoryWithFlow Started")
         val comments = apiService.getComments(
             token = getAccessToken(),
