@@ -9,7 +9,7 @@ import com.foxxx.vkcliencompose.domain.FeedPost
 import com.foxxx.vkcliencompose.domain.StatisticItem
 import com.foxxx.vkcliencompose.domain.StatisticType
 import com.foxxx.vkcliencompose.extentions.mergeWith
-import com.foxxx.vkcliencompose.presentation.main.AuthState
+import com.foxxx.vkcliencompose.domain.AuthState
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
@@ -43,25 +43,25 @@ class NewsFeedRepositoryWithFlow(application: Application) {
 
     private var nextFrom: String? = null
 
-    private val authStateFlow = flow {
-        val loggedIn = token != null && token.isValid
-        if (loggedIn) {
-            emit(AuthState.Authorized)
-        } else {
-            emit(AuthState.NotAuthorized)
+    private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)
+
+    val authStateFlow = flow {
+        checkAuthStateEvents.emit(Unit)
+        checkAuthStateEvents.collect {
+            val currentToken = token
+            val loggedIn = currentToken != null && currentToken.isValid
+            val authState = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
+            emit(authState)
         }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        initialValue = AuthState.Initial
+    )
+
+    suspend fun checkAuthState() {
+        checkAuthStateEvents.emit(Unit)
     }
-
-    val stateValuesFlow: StateFlow<AuthState> = authStateFlow
-        .stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.Lazily,
-            initialValue = AuthState.Initial
-        )
-
-
-//    val authorization : StateFlow<AuthState> = authStateFlow
-//        .stateIn(scope = coroutineScope)
 
     private val loadedListFlow = flow {
         nextDataNeededEvents.emit(Unit)

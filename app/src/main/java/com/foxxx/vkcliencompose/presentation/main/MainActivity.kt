@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.foxxx.vkcliencompose.domain.AuthState
 import com.foxxx.vkcliencompose.ui.LoginScreen
 import com.foxxx.vkcliencompose.ui.theme.VKClientComposeTheme
 import com.vk.api.sdk.VK
@@ -27,11 +28,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     ) {
                     val viewModel: MainViewModel = viewModel()
-                    val authState = viewModel.authState.collectAsState(AuthState.Initial)
+                    val authState = viewModel.authStateFlow.collectAsState(AuthState.Initial)
                     val authLauncher = rememberLauncherForActivityResult(
                         contract = VK.getVKAuthActivityResultContract()
                     ) {
-                        viewModel.performAuthResult(it)
+                        viewModel.performAuthResult()
                     }
 
                     when (authState.value) {

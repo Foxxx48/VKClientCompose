@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose.presentation.main
+package com.foxxx.vkcliencompose.domain
 
 sealed class AuthState {
 
