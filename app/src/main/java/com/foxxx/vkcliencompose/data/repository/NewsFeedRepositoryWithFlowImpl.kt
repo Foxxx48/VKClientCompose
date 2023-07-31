@@ -11,7 +11,7 @@ import com.foxxx.vkcliencompose.domain.entity.StatisticType
 import com.foxxx.vkcliencompose.extentions.mergeWith
 import com.foxxx.vkcliencompose.domain.entity.AuthState
 import com.foxxx.vkcliencompose.domain.entity.PostComment
-import com.foxxx.vkcliencompose.domain.repository.NewsFeedRepository
+import com.foxxx.vkcliencompose.domain.repository.NewsFeedRepositoryWithFlow
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 
-class NewsFeedRepositoryWithFlowImpl(application: Application) : NewsFeedRepository {
+class NewsFeedRepositoryWithFlowImpl(application: Application) : NewsFeedRepositoryWithFlow {
 
     private val apiService = ApiFactory.apiService
     private val storage = VKPreferencesKeyValueStorage(application)

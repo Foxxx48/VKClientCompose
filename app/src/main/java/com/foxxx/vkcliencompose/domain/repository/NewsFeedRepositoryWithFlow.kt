@@ -5,7 +5,7 @@ import com.foxxx.vkcliencompose.domain.entity.FeedPost
 import com.foxxx.vkcliencompose.domain.entity.PostComment
 import kotlinx.coroutines.flow.StateFlow
 
-interface NewsFeedRepository {
+interface NewsFeedRepositoryWithFlow {
 
     fun loadAuthStateFlow(): StateFlow<AuthState>
 
