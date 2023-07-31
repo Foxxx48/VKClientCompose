@@ -1,7 +1,6 @@
 package com.foxxx.vkcliencompose.data.repository
 
 import android.app.Application
-import android.util.Log
 import com.foxxx.vkcliencompose.data.mapper.CommentsMapper
 import com.foxxx.vkcliencompose.data.mapper.NewsFeedMapper
 import com.foxxx.vkcliencompose.data.network.ApiFactory
@@ -93,7 +92,7 @@ class NewsFeedRepository(application: Application)  {
     }
 
     suspend fun loadComments(feedPost: FeedPost): List<PostComment> {
-        Log.d("TAG", "loadComments() - NewsFeedRepository Started")
+
         val response = apiService.getComments(
             token = getAccessToken(),
             ownerId = feedPost.communityId,
