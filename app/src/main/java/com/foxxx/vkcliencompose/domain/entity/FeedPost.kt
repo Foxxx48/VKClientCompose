@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose.domain
+package com.foxxx.vkcliencompose.domain.entity
 
 import android.os.Bundle
 import android.os.Parcelable

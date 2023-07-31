@@ -28,7 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.foxxx.vkcliencompose.domain.FeedPost
+import com.foxxx.vkcliencompose.domain.entity.FeedPost
 import com.foxxx.vkcliencompose.ui.VKCard
 import com.foxxx.vkcliencompose.ui.theme.DarkBlue
 

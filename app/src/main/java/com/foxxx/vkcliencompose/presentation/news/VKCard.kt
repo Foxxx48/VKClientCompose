@@ -35,9 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.foxxx.vkcliencompose.R
-import com.foxxx.vkcliencompose.domain.FeedPost
-import com.foxxx.vkcliencompose.domain.StatisticItem
-import com.foxxx.vkcliencompose.domain.StatisticType
+import com.foxxx.vkcliencompose.domain.entity.FeedPost
+import com.foxxx.vkcliencompose.domain.entity.StatisticItem
+import com.foxxx.vkcliencompose.domain.entity.StatisticType
 import com.foxxx.vkcliencompose.ui.theme.DarkRed
 
 @Composable

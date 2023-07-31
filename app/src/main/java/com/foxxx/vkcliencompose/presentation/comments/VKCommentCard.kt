@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.foxxx.vkcliencompose.domain.PostComment
+import com.foxxx.vkcliencompose.domain.entity.PostComment
 
 
 @Composable

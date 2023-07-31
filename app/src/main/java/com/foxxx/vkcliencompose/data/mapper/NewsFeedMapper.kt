@@ -2,9 +2,9 @@ package com.foxxx.vkcliencompose.data.mapper
 
 import android.icu.text.SimpleDateFormat
 import com.foxxx.vkcliencompose.data.model.NewsFeedResponseDto
-import com.foxxx.vkcliencompose.domain.FeedPost
-import com.foxxx.vkcliencompose.domain.StatisticItem
-import com.foxxx.vkcliencompose.domain.StatisticType
+import com.foxxx.vkcliencompose.domain.entity.FeedPost
+import com.foxxx.vkcliencompose.domain.entity.StatisticItem
+import com.foxxx.vkcliencompose.domain.entity.StatisticType
 import java.util.Date
 import java.util.Locale
 import kotlin.math.absoluteValue

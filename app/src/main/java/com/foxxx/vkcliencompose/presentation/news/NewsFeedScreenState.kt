@@ -1,6 +1,6 @@
 package com.foxxx.vkcliencompose.presentation.news
 
-import com.foxxx.vkcliencompose.domain.FeedPost
+import com.foxxx.vkcliencompose.domain.entity.FeedPost
 
 sealed class NewsFeedScreenState {
 

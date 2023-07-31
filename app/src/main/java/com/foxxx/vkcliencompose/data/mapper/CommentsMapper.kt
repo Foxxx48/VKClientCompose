@@ -2,7 +2,7 @@ package com.foxxx.vkcliencompose.data.mapper
 
 import android.icu.text.SimpleDateFormat
 import com.foxxx.vkcliencompose.data.model.CommentsResponseDto
-import com.foxxx.vkcliencompose.domain.PostComment
+import com.foxxx.vkcliencompose.domain.entity.PostComment
 import java.util.Date
 import java.util.Locale
 

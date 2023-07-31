@@ -5,14 +5,14 @@ import android.util.Log
 import com.foxxx.vkcliencompose.data.mapper.CommentsMapper
 import com.foxxx.vkcliencompose.data.mapper.NewsFeedMapper
 import com.foxxx.vkcliencompose.data.network.ApiFactory
-import com.foxxx.vkcliencompose.domain.FeedPost
-import com.foxxx.vkcliencompose.domain.PostComment
-import com.foxxx.vkcliencompose.domain.StatisticItem
-import com.foxxx.vkcliencompose.domain.StatisticType
+import com.foxxx.vkcliencompose.domain.entity.FeedPost
+import com.foxxx.vkcliencompose.domain.entity.PostComment
+import com.foxxx.vkcliencompose.domain.entity.StatisticItem
+import com.foxxx.vkcliencompose.domain.entity.StatisticType
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 
-class NewsFeedRepository(application: Application) {
+class NewsFeedRepository(application: Application)  {
     private val storage = VKPreferencesKeyValueStorage(application)
     private val token = VKAccessToken.restore(storage)
 

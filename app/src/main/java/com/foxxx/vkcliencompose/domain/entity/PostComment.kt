@@ -1,4 +1,4 @@
-package com.foxxx.vkcliencompose.domain
+package com.foxxx.vkcliencompose.domain.entity
 
 
 data class PostComment(

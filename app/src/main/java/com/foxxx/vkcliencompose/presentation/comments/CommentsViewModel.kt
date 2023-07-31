@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.foxxx.vkcliencompose.data.repository.NewsFeedRepository
-import com.foxxx.vkcliencompose.domain.FeedPost
+import com.foxxx.vkcliencompose.domain.entity.FeedPost
 import kotlinx.coroutines.launch
 
 

@@ -4,8 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.foxxx.vkcliencompose.data.repository.NewsFeedRepositoryWithFlow
-import com.foxxx.vkcliencompose.domain.FeedPost
+import com.foxxx.vkcliencompose.data.repository.NewsFeedRepositoryWithFlowImpl
+import com.foxxx.vkcliencompose.domain.entity.FeedPost
 import com.foxxx.vkcliencompose.extentions.mergeWith
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +21,7 @@ class NewsFeedViewModelWithFlow(application: Application) : AndroidViewModel(app
             Log.d("NewsFeedViewModelWithFlow", "Exception caught by exception handler")
         }
 
-    private val repository = NewsFeedRepositoryWithFlow(application)
+    private val repository = NewsFeedRepositoryWithFlowImpl(application)
 
     private val recommendationsFlow = repository.recommendations
 

@@ -1,7 +1,7 @@
 package com.foxxx.vkcliencompose.presentation.comments
 
-import com.foxxx.vkcliencompose.domain.FeedPost
-import com.foxxx.vkcliencompose.domain.PostComment
+import com.foxxx.vkcliencompose.domain.entity.FeedPost
+import com.foxxx.vkcliencompose.domain.entity.PostComment
 
 sealed class CommentsScreenState {
 
