@@ -75,8 +75,8 @@ fun VKCard(
             AsyncImage(
                 model = feedPost.contentImageUrl,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(400.dp),
+                    .height(400.dp)
+                    .fillMaxWidth(),
                 contentDescription = "poster",
                 contentScale = ContentScale.Fit,
             )

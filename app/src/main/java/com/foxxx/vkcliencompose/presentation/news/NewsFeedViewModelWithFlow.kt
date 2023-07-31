@@ -6,6 +6,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.foxxx.vkcliencompose.data.repository.NewsFeedRepositoryWithFlowImpl
 import com.foxxx.vkcliencompose.domain.entity.FeedPost
+import com.foxxx.vkcliencompose.domain.usecases.ChangeLikeStatusUseCase
+import com.foxxx.vkcliencompose.domain.usecases.DeletePostUseCase
+import com.foxxx.vkcliencompose.domain.usecases.LoadNextDataUseCase
+import com.foxxx.vkcliencompose.domain.usecases.LoadRecommendationsUseCase
 import com.foxxx.vkcliencompose.extentions.mergeWith
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,7 +27,12 @@ class NewsFeedViewModelWithFlow(application: Application) : AndroidViewModel(app
 
     private val repository = NewsFeedRepositoryWithFlowImpl(application)
 
-    private val recommendationsFlow = repository.recommendations
+    private val loadRecommendationsUseCase = LoadRecommendationsUseCase(repository)
+    private val loadNextDataUseCase = LoadNextDataUseCase(repository)
+    private val changeLikeStatusUseCase = ChangeLikeStatusUseCase(repository)
+    private val deletePostUseCase = DeletePostUseCase(repository)
+
+    private val recommendationsFlow = loadRecommendationsUseCase()
 
     private val loadNextDataFlow = MutableSharedFlow<NewsFeedScreenState>()
 
@@ -41,19 +50,19 @@ class NewsFeedViewModelWithFlow(application: Application) : AndroidViewModel(app
                     nextDataIsLoading = true
                 )
             )
-            repository.loadNextData()
+            loadNextDataUseCase()
         }
     }
 
     fun changeLikeStatus(feedPost: FeedPost) {
         viewModelScope.launch(exceptionHandler) {
-            repository.changeLikeStatus(feedPost)
+            changeLikeStatusUseCase(feedPost)
         }
     }
 
     fun removePost(feedPost: FeedPost) {
         viewModelScope.launch(exceptionHandler) {
-            repository.deletePost(feedPost)
+            deletePostUseCase(feedPost)
         }
     }
 }

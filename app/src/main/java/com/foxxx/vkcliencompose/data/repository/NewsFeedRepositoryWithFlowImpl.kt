@@ -90,7 +90,7 @@ class NewsFeedRepositoryWithFlowImpl(application: Application) : NewsFeedReposit
         true
     }
 
-    val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
+    private val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
         .mergeWith(refreshedListFlow)
         .stateIn(
             scope = coroutineScope,
