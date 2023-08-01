@@ -1,7 +1,6 @@
 package com.foxxx.vkcliencompose.presentation.comments
 
 
-import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,29 +20,26 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.R
 import com.foxxx.vkcliencompose.domain.entity.FeedPost
+import com.foxxx.vkcliencompose.presentation.ViewModelFactory
 import com.foxxx.vkcliencompose.ui.VKCommentCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
+    viewModelFactory: ViewModelFactory,
     onBackPressed: () -> Unit,
     feedPost: FeedPost
 ) {
 
     val viewModel: CommentsViewModelWithFlow = viewModel(
-        factory = CommentsViewModelFactory(
-            feedPost,
-        application = LocalContext.current.applicationContext as Application)
+        factory = viewModelFactory
     )
-//    val screenState =
-//        viewModel.screenState.observeAsState(CommentsScreenState.Initial)
 
     val screenState =
         viewModel.screenState.collectAsState(CommentsScreenState.Initial)

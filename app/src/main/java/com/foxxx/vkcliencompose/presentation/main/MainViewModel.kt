@@ -1,21 +1,23 @@
 package com.foxxx.vkcliencompose.presentation.main
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.foxxx.vkcliencompose.data.repository.NewsFeedRepositoryWithFlowImpl
+import com.foxxx.vkcliencompose.domain.usecases.CheckAuthStateUseCase
+import com.foxxx.vkcliencompose.domain.usecases.LoadAuthStateFlowUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel @Inject constructor(
+    private val loadAuthStateFlowUseCase: LoadAuthStateFlowUseCase,
+    private val checkAuthStateUseCase: CheckAuthStateUseCase
+) : ViewModel() {
 
-    private val repositoryWithFlow = NewsFeedRepositoryWithFlowImpl(application)
 
-
-    val authStateFlow = repositoryWithFlow.authStateFlow
+    val authStateFlow = loadAuthStateFlowUseCase()
 
     fun performAuthResult() {
         viewModelScope.launch {
-            repositoryWithFlow.checkAuthState()
+            checkAuthStateUseCase()
         }
 
     }

@@ -1,17 +1,16 @@
 package com.foxxx.vkcliencompose.data.repository
 
-import android.app.Application
 import android.util.Log
 import com.foxxx.vkcliencompose.data.mapper.CommentsMapper
 import com.foxxx.vkcliencompose.data.mapper.NewsFeedMapper
-import com.foxxx.vkcliencompose.data.network.ApiFactory
+import com.foxxx.vkcliencompose.data.network.ApiService
+import com.foxxx.vkcliencompose.domain.entity.AuthState
 import com.foxxx.vkcliencompose.domain.entity.FeedPost
+import com.foxxx.vkcliencompose.domain.entity.PostComment
 import com.foxxx.vkcliencompose.domain.entity.StatisticItem
 import com.foxxx.vkcliencompose.domain.entity.StatisticType
-import com.foxxx.vkcliencompose.extentions.mergeWith
-import com.foxxx.vkcliencompose.domain.entity.AuthState
-import com.foxxx.vkcliencompose.domain.entity.PostComment
 import com.foxxx.vkcliencompose.domain.repository.NewsFeedRepositoryWithFlow
+import com.foxxx.vkcliencompose.extentions.mergeWith
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
@@ -23,18 +22,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class NewsFeedRepositoryWithFlowImpl(application: Application) : NewsFeedRepositoryWithFlow {
+class NewsFeedRepositoryWithFlowImpl @Inject constructor(
+    private val apiService: ApiService,
+    private val storage: VKPreferencesKeyValueStorage,
+    private val newsFeedMapper: NewsFeedMapper,
+    private val commentsMapper: CommentsMapper
+) : NewsFeedRepositoryWithFlow {
 
-    private val apiService = ApiFactory.apiService
-    private val storage = VKPreferencesKeyValueStorage(application)
     private val token
         get() = VKAccessToken.restore(storage)
 
-    private val newsFeedMapper = NewsFeedMapper()
-    private val commentsMapper = CommentsMapper()
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
-
 
     // Authorization
     private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)

@@ -1,6 +1,5 @@
 package com.foxxx.vkcliencompose.presentation.news
 
-import android.app.Application
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,31 +23,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.domain.entity.FeedPost
+import com.foxxx.vkcliencompose.presentation.ViewModelFactory
 import com.foxxx.vkcliencompose.ui.VKCard
 import com.foxxx.vkcliencompose.ui.theme.DarkBlue
 
 
 @Composable
 fun NewsFeedScreen(
+    viewModelFactory: ViewModelFactory,
     onCommentsClickListener: (FeedPost) -> Unit
 ) {
-//    val viewModel = ViewModelProvider(owner = checkNotNull(LocalViewModelStoreOwner.current),
-//        factory = NewsFeedViewModelFactory(
-//            application = LocalContext.current.applicationContext as Application
-//        ))[NewsFeedViewModelWithFlow::class.java]
-
-    val viewModel: NewsFeedViewModelWithFlow = viewModel(
-        factory = NewsFeedViewModelFactory(
-            application = LocalContext.current.applicationContext as Application
-        )
-    )
-
-//    val screenState = viewModel.screenState.observeAsState(CommentsScreenState.Initial)
+    val viewModel : NewsFeedViewModelWithFlow = viewModel(factory = viewModelFactory)
     val screenState = viewModel.screenState.collectAsState(initial = NewsFeedScreenState.Initial)
 
     when (val currentState = screenState.value) {

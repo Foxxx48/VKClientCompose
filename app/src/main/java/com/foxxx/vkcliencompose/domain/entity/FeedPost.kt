@@ -7,7 +7,7 @@ import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class FeedPost(
+data class FeedPost (
     val id: Long,
     val communityName: String,
     val communityId: Long,

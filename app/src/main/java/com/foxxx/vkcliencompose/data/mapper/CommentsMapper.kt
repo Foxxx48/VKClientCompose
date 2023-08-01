@@ -5,8 +5,9 @@ import com.foxxx.vkcliencompose.data.model.CommentsResponseDto
 import com.foxxx.vkcliencompose.domain.entity.PostComment
 import java.util.Date
 import java.util.Locale
+import javax.inject.Inject
 
-class CommentsMapper {
+class CommentsMapper @Inject constructor() {
     fun mapResponseToPostComment(responseDto: CommentsResponseDto): List<PostComment> {
         val result = mutableListOf<PostComment>()
         val comments = responseDto.commentsContentDto.comments
