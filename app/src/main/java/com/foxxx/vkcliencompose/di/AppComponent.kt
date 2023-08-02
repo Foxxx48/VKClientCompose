@@ -1,6 +1,7 @@
 package com.foxxx.vkcliencompose.di
 
 import android.content.Context
+import com.foxxx.vkcliencompose.presentation.ViewModelFactory
 import com.foxxx.vkcliencompose.presentation.main.MainActivity
 import dagger.BindsInstance
 import dagger.Component
@@ -10,6 +11,8 @@ import dagger.Component
 interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
+
+    fun getViewModelFactory() : ViewModelFactory
 
     fun getCommentsScreenComponentFactory(): CommentsScreenComponent.Factory
 

@@ -20,7 +20,6 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.foxxx.vkcliencompose.navigation.AppNavGraph
 import com.foxxx.vkcliencompose.navigation.rememberNavigationState
-import com.foxxx.vkcliencompose.presentation.ViewModelFactory
 import com.foxxx.vkcliencompose.presentation.comments.CommentsScreen
 import com.foxxx.vkcliencompose.presentation.news.NewsFeedScreen
 import com.foxxx.vkcliencompose.ui.theme.DarkBlue
@@ -28,9 +27,7 @@ import com.foxxx.vkcliencompose.ui.theme.DarkBlue
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(
-    viewModelFactory: ViewModelFactory
-) {
+fun MainScreen() {
     val navigationState = rememberNavigationState()
 
     Scaffold(
@@ -81,7 +78,6 @@ fun MainScreen(
             navHostController = navigationState.navHostController,
             newsFeedScreenContent = {
                 NewsFeedScreen(
-                    viewModelFactory = viewModelFactory,
                     onCommentsClickListener = {
                         navigationState.navigateToComments(it)
                     }

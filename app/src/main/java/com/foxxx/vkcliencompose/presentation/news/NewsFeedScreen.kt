@@ -19,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,28 +28,38 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.domain.entity.FeedPost
-import com.foxxx.vkcliencompose.presentation.ViewModelFactory
+import com.foxxx.vkcliencompose.presentation.getApplicationComponent
 import com.foxxx.vkcliencompose.ui.VKCard
 import com.foxxx.vkcliencompose.ui.theme.DarkBlue
 
 
 @Composable
 fun NewsFeedScreen(
-    viewModelFactory: ViewModelFactory,
     onCommentsClickListener: (FeedPost) -> Unit
 ) {
-    val viewModel : NewsFeedViewModelWithFlow = viewModel(factory = viewModelFactory)
+    val component = getApplicationComponent()
+    val viewModel : NewsFeedViewModelWithFlow = viewModel(factory = component.getViewModelFactory())
     val screenState = viewModel.screenState.collectAsState(initial = NewsFeedScreenState.Initial)
 
+    NewsFeedScreenContent(
+        screenState = screenState,
+        onCommentClickListener = onCommentsClickListener,
+        viewModel = viewModel)
+
+}
+@Composable
+private fun NewsFeedScreenContent(
+    screenState: State<NewsFeedScreenState>,
+    onCommentClickListener: (FeedPost) -> Unit,
+    viewModel: NewsFeedViewModelWithFlow,
+) {
     when (val currentState = screenState.value) {
         is NewsFeedScreenState.Posts -> {
 
             FeedPosts(
                 viewModel = viewModel,
                 posts = currentState.posts,
-                onCommentsClickListener = {
-                    onCommentsClickListener(it)
-                },
+                onCommentsClickListener = onCommentClickListener,
                 nextDataIsLoading = currentState.nextDataIsLoading
             )
         }

@@ -1,7 +1,6 @@
 package com.foxxx.vkcliencompose.presentation.comments
 
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -18,27 +17,26 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.foxxx.vkcliencompose.R
 import com.foxxx.vkcliencompose.domain.entity.FeedPost
-import com.foxxx.vkcliencompose.presentation.NewsFeedApplication
+import com.foxxx.vkcliencompose.presentation.getApplicationComponent
 import com.foxxx.vkcliencompose.ui.VKCommentCard
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun CommentsScreen(
     onBackPressed: () -> Unit,
     feedPost: FeedPost
 ) {
 
-    val component = (LocalContext.current.applicationContext as NewsFeedApplication)
-        .component
+    val component = getApplicationComponent()
         .getCommentsScreenComponentFactory()
         .create(feedPost)
 
@@ -49,8 +47,21 @@ fun CommentsScreen(
     val screenState =
         viewModel.screenState.collectAsState(CommentsScreenState.Initial)
 
+    CommentsScreenContent(
+        screenState = screenState,
+        onBackPressed = onBackPressed
+    )
+
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CommentsScreenContent(
+    screenState: State<CommentsScreenState>,
+    onBackPressed: () -> Unit
+) {
     val currentState = screenState.value
-    Log.d("TAG", "loadComments() - ${screenState.value.javaClass.canonicalName}")
     if (currentState is CommentsScreenState.Comments) {
         Scaffold(
             topBar = {
@@ -96,8 +107,6 @@ fun CommentsScreen(
                 }
             }
         }
-    } else {
-        Log.d("TAG", "loadComments() - currentState is NOT CommentsScreenState.Comments")
     }
 }
 
