@@ -11,6 +11,8 @@ interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
 
+    fun getCommentsScreenComponentFactory(): CommentsScreenComponent.Factory
+
     @Component.Factory
     interface Factory {
         fun create(
