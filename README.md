@@ -15,9 +15,11 @@ Simple application with list of news from the social network VK with user author
 - Kotlin
 - MVVM
 - Jetpack Compose
+- Coil
 - Kotlin Flow
 - Kotlin Coroutines
 - Retrofit
 - Okhttp3
 - VK API
 - Dagger
+
