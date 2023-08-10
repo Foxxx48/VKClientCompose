@@ -1,5 +1,7 @@
 # VK News Client 
-Simple application with list of news from the social network VK with user authorization, with the ability to delete the post and like the post.
+Simple application with list of news from the social network VK with user authorization, with the ability to like the post and delete the post.
+
+It is possible to view the comments on the post.
 
 ### Languages and Tools:
 <img align="left" alt="Kotlin" width="64px" hight="64px" src="https://github.com/devicons/devicon/blob/master/icons/kotlin/kotlin-original.svg" style="padding-right:10px;" />
@@ -22,4 +24,19 @@ Simple application with list of news from the social network VK with user author
 - Okhttp3
 - VK API
 - Dagger
+
+### UI example:
+<p>
+  <img alt="ScreenShot VK Client 1" width="200px" hight="400px"  src="https://github.com/Foxxx48/VKClientCompose/assets/85708455/8d03e146-c01e-4712-bc04-9c2e6fbab4b7"/>
+  <img alt="ScreenShot VK Client 2" width="200px" hight="400px"  src="https://github.com/Foxxx48/VKClientCompose/assets/85708455/595a096f-b9ba-4676-a790-e0a6f019a583"/>
+   <img alt="ScreenShot VK Client 3" width="200px" hight="400px"  src="https://github.com/Foxxx48/VKClientCompose/assets/85708455/d9081fd8-57a2-4768-87ea-68c72a7647b4"/>
+   <img alt="ScreenShot VK Client 4" width="200px" hight="400px"  src="https://github.com/Foxxx48/VKClientCompose/assets/85708455/1041cf51-89e2-42f4-893f-60c028256997"/>
+</p>
+
+### Architecture example:
+<p>
+  <img alt="ScreenShot  VK Client Arch" width="200px" hight="400px"  src="https://github.com/Foxxx48/VKClientCompose/assets/85708455/134355fd-fd0e-42ec-8a7c-4471330f243a"/>
+</p>
+
+
 
