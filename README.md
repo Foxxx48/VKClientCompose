@@ -3,6 +3,8 @@ Simple application with list of news from the social network VK with user author
 
 It is possible to view the comments on the post.
 
+Uses API https://dev.vk.com/ru
+
 ### Languages and Tools:
 <img align="left" alt="Kotlin" width="64px" hight="64px" src="https://github.com/devicons/devicon/blob/master/icons/kotlin/kotlin-original.svg" style="padding-right:10px;" />
 <img align="left" alt="Android Studio" width="64px" hight="64px" src="https://github.com/devicons/devicon/blob/master/icons/androidstudio/androidstudio-original.svg" style="padding-right:10px;" />
