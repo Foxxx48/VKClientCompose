@@ -16,6 +16,7 @@ Uses API https://dev.vk.com/ru
 <br />
 
 ### Technology stack:
+- Android SDK
 - Kotlin
 - MVVM
 - Jetpack Compose
